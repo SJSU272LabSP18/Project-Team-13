@@ -18,7 +18,7 @@
    
    **Technology** IBM Analytics Engine, Apache Spark, Machine Learning, Node.js, JavaScript
 
-Professor Ranjan's Idea
+**Professor Ranjan's Idea**
 
 3. ### WeServe: Connecting  pro-bono and student volunteers to the NGOs around the world.
 
