@@ -3,13 +3,13 @@
 ## Project Ideas
 
 1. ### Converse2Canvas
-	: Course notifications in Canvas are very useful. We feel that in the world of conversational science, our canvas should be taken to next level wherein, we can speak with Canvas and ask to update something. Currently Canvas is not automated. 
+	Course notifications in Canvas are very useful. We feel that in the world of conversational science, our canvas should be taken to next level wherein, we can speak with Canvas and ask to update something. Currently Canvas is not automated. 
 	Our idea is to automate common tasks across the courses while enabling students to ask information and request to do tasks. For example asking the Canvas to submit honesty pledge, reminding to-do tasks etc.
 	
 	**Technology** Watson API, Apache Spark, Machine Learning, IBM DSX, Python
 
 2. ### Automated RideShare
-	: In this modern era of mobile apps and technology we still lag to address few ascpects in commuting. At times there might be a large commuters but all the transport options are not easily available and even if they know there may not be enough resources to cater the volume of commuters. We wish to develop a platform where any person can be a commuter or a driver. If a driver he should service the nearest commuter.
+	In this modern era of mobile apps and technology we still lag to address few ascpects in commuting. At times there might be a large commuters but all the transport options are not easily available and even if they know there may not be enough resources to cater the volume of commuters. We wish to develop a platform where any person can be a commuter or a driver. If a driver he should service the nearest commuter.
 	Idea is to connect drivers and riders automatically based on the routes and starting location. We will also predict the volume of people commuting and alert transport services or potential drivers to serve the riders.
 	
 	**Technology** IBM Analytics Engine, Apache Spark, Machine Learning, Node.js, JavaScript
