@@ -3,10 +3,10 @@
 ## Project Ideas
 
 1. *Converse2Canvas*
-	Course notifications in Canvas are very useful. We feel that in the world of conversational science, our canvas should be taken to next level wherein, we can speak with Canvas and talk to it to update something. Currently you see, it is not automated. Our idea is to automate common tasks across the courses while enabling students to ask information and request to do tasks. For example asking the Canvas to submit honesty pledge, reminding to-do tasks etc.
+	: Course notifications in Canvas are very useful. We feel that in the world of conversational science, our canvas should be taken to next level wherein, we can speak with Canvas and talk to it to update something. Currently you see, it is not automated. Our idea is to automate common tasks across the courses while enabling students to ask information and request to do tasks. For example asking the Canvas to submit honesty pledge, reminding to-do tasks etc.
 
 2. *Automated RideShare*
-In this modern era of mobile apps and technology we still lag to address few ascpects in commuting. At times there might be a large commuters but the transport options might not be knowing and even if they know there may not be enough resources to cater the commuters number. We wish to develop a platform where any person can be a commuter or a driver. If driver he should service the nearest commuter.
+	: In this modern era of mobile apps and technology we still lag to address few ascpects in commuting. At times there might be a large commuters but the transport options might not be knowing and even if they know there may not be enough resources to cater the commuters number. We wish to develop a platform where any person can be a commuter or a driver. If driver he should service the nearest commuter.
 So here our idea is to connect drivers and riders automatically based on the routes and starting location. We will also predict the volume of people commuting and alert transport services or potential drivers to serve the riders.
 
 Professor Ranjan's Idea
