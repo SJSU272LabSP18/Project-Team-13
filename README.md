@@ -3,8 +3,8 @@
 ## Project Ideas
 
 1. ### Converse2Canvas
-	Course notifications in Canvas are very useful. We feel that in the world of conversational science, our canvas should be taken to next level wherein, we can speak with Canvas and ask to update something. Currently Canvas is not automated. 
-	Our idea is to automate common tasks across the courses while enabling students to ask information and request to do tasks. For example asking the Canvas to submit honesty pledge, reminding to-do tasks etc.
+	Course notifications in Canvas are very useful. We feel that in the world of conversational science, our canvas should be taken to next level wherein, we can speak with Canvas and ask to update something. Currently Canvas is not automated. We have to submit same documents at multiple pages. Canvas announcements, discussions, and grade notifications are too much to process and may not be relevant for the specific student.
+	Our idea is to automate common tasks across the courses while enabling students to ask specific information and request to do tasks. For example asking the Canvas to submit honesty pledge, reminding Students to-do tasks etc.
 	
 	**Technology** Watson API, Apache Spark, Machine Learning, IBM DSX, Python
 
