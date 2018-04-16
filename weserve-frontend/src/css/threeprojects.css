@@ -1,0 +1,15 @@
+#projects {
+    margin-top: 20px;
+    border: black 1px solid;
+    width: 300px;
+    height: 200px;
+    float: left;
+    margin-right: 30px;
+}
+
+#viewMoreLink  {
+    margin-top: 20px;
+    float: left;
+    margin-right: 30px;
+
+}
