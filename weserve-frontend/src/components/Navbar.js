@@ -16,10 +16,10 @@ class Navbar extends Component {
                         <div className="collapse navbar-collapse" id="navbarResponsive">
                             <ul className="navbar-nav ml-auto">
                                 <li className="nav-item">
-                                    <a className="nav-link" href="#login">Login</a>
+                                    <a className="nav-link" href="login">Login</a>
                                 </li>
                                 <li className="nav-item">
-                                    <a className="nav-link" href="#signup">Signup</a>
+                                    <a className="nav-link" href="signup">Signup</a>
                                 </li>
                                 {/*<li className="nav-item">*/}
                                     {/*<a className="nav-link js-scroll-trigger" href="#about">About</a>*/}
