@@ -45,5 +45,53 @@ router.post('/signup', (req, res, next) => {
     })
 });
 
+router.post('/login', (req, res, next) => {
+   console.log(req.body);
+   pool.getConnection((err, con) => {
+       var sql = "select * from Users where email = " + mysql.escape(req.body.username) +
+           " and password = " + mysql.escape(req.body.password);
+
+       con.query(sql, (err, result) => {
+           con.release();
+           if(err) {
+               console.log(err);
+                res.json({message: "Error in querying DB in login"})
+           } else {
+               if(result.length > 0) {
+                   console.log("User found...", result);
+                   req.session.username = result[0].username;
+                   console.log("Session Started...", req.session.username );
+                   res.json({
+                       message: "success",
+                       result: result[0],
+                       sessionUsername: req.session.username
+                   })
+               } else {
+                   res.json({
+                       message: "Error..User not found"
+                   })
+               }
+           }
+       })
+
+   })
+});
+
+router.get('/checksession', (req, res) => {
+    console.log("In checksession...",req.session.username);
+    if(req.session.username) {
+        res.json({sessionUsername: req.session.username});
+    }
+
+    else
+        res.json({sessionUsername: "ERROR"});
+});
+
+router.post('/logout', (req, res) => {
+    console.log('Logging out...', req.session.username);
+    req.session.destroy();
+    res.json({"result": "Session destoryed..please login"});
+});
+
 
 module.exports = router;

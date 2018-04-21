@@ -16,6 +16,17 @@ import img6f from "../img/portfolio/fullsize/6.jpg";
 import img6t from "../img/portfolio/thumbnails/6.jpg";
 
 class Home extends Component {
+
+    constructor() {
+        super();
+        this.handleViewMore = this.handleViewMore.bind(this);
+    }
+
+    handleViewMore(e) {
+        e.preventDefault();
+        console.log("Hello on handle view more");
+    }
+
     render() {
         return(
             <div className="Home">
@@ -162,7 +173,7 @@ class Home extends Component {
                                         </div>
                                 </a>
                             </div>
-                            <div className="col-lg-4 col-sm-6">
+                            <div onClick={ this.handleViewMore } className="col-lg-4 col-sm-6">
                                 <a className="portfolio-box" href= { img6f }>
                                     <img className="img-fluid" src= { img6t } alt="" />
                                         <div className="portfolio-box-caption">
@@ -171,7 +182,7 @@ class Home extends Component {
                                                     Category
                                                 </div>
                                                 <div className="project-name">
-                                                    Project Name
+                                                    View More
                                                 </div>
                                             </div>
                                         </div>

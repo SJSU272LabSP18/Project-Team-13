@@ -1,7 +1,74 @@
 import React, { Component } from 'react';
 import '../css/login.css';
+import axios from 'axios';
+import url from '../serverurl';
 
 class Login extends Component {
+
+    constructor() {
+        super();
+        this.state = {
+            username: "",
+            password: "",
+            message: "",
+            isLoggedIn: false
+        }
+        this.handleChange = this.handleChange.bind(this);
+        this.handleLogin = this.handleLogin.bind(this);
+    }
+
+    componentWillMount() {
+
+        axios.get(url + "/checksession", {withCredentials: true})
+            .then((response) => {
+                console.log("In checksession on Navbar",response.data);
+                if(response.data.sessionUsername !== "ERROR") {
+                    this.setState({
+                        isLoggedIn: true
+                    }, () => {
+                        if(this.state.isLoggedIn === true) {
+                            this.props.history.push('/userhome');
+                        }
+                    })
+                }
+            })
+
+
+    }
+
+    handleChange(e) {
+        this.setState({
+            [e.target.name]: e.target.value
+        })
+    }
+
+
+    handleLogin(e) {
+        e.preventDefault();
+        console.log("In handle login on login page...", this.state.username, this.state.password);
+        var user = {
+            username: this.state.username,
+            password:this.state.password
+        }
+        axios.post(url + "/login", user, {withCredentials: true})
+            .then((response) => {
+                console.log("In handle login after response on login page...", response.data);
+                if(response.data.message === "success") {
+                    alert('Success');
+                    this.setState({
+                        isLoggedIn: true
+                    }, () => {
+                        this.props.history.push('/userhome');
+                    })
+                } else {
+                    alert('Error');
+                }
+            })
+    }
+
+
+
+
     render() {
         return(
             <div className="Login">
@@ -12,12 +79,11 @@ class Login extends Component {
                             <div className="account-wall">
                                 <img className="profile-img" src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=120"
                                      alt="" />
-                                    <form className="form-signin">
-                                        <input type="email" className="form-control" placeholder="Email" required autoFocus />
-                                            <input type="password" className="form-control" placeholder="Password" required />
+                                    <form className="form-signin" onSubmit={this.handleLogin}>
+                                        <input type="email" name="username" onChange={this.handleChange} className="form-control" placeholder="Email" required autoFocus />
+                                            <input type="password" name="password" onChange={this.handleChange} className="form-control" placeholder="Password" required />
                                                 <button className="btn btn-lg btn-primary btn-block" type="submit">
                                                     Sign in</button>
-
                                     </form>
                             </div>
                             <a href="#" className="text-center new-account">Create an account </a>

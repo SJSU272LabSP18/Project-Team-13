@@ -5,6 +5,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var session = require('express-session');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -20,7 +21,7 @@ app.set('view engine', 'ejs');
 app.use(logger('dev'));
 
 app.use(cors ({
-    origin: 'http://ec2-18-144-2-185.us-west-1.compute.amazonaws.com:3000',
+    origin: 'http://localhost:3000',
     credentials: true
 }));
 
@@ -28,6 +29,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use( session({
+    secret : 'abhabclkjbiyvyy',
+    duration : 30 * 60 * 1000,
+    activeDuration : 5 * 60 * 1000,
+    resave: false,
+    saveUninitialized: false
+}))
 
 app.use('/', index);
 app.use('/users', users);
