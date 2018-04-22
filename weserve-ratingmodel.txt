@@ -3,6 +3,7 @@ Users, Ratings, Projects
 Users types- volunteers, pro-bono consultant, ngo
 Our model creates project ratings for each user
 These ratings are fed into ElasticSearch and Spark ML Libraries, with the Alternating Least Square algorithm. 
+    - https://github.com/IBM/elasticsearch-spark-recommender
 We are recommending based on user-project ratings matrix.
 The rating system is not visible to users of any type. 
 The ratings are generated automatically behind the scenes, specifically for this ML engine.
