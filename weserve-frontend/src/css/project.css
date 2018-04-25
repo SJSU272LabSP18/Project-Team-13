@@ -1,0 +1,21 @@
+img {
+    max-width: 750px;
+    max-height: 500px;
+    object-fit: cover;
+}
+
+
+#recommendedVOrC {
+    margin-top: 50px;
+    margin-left: 10px;
+}
+
+#projectName {
+    margin-left: -20px;
+}
+
+hr {
+    max-width: 1300px;
+    margin-left: -10px;
+
+}

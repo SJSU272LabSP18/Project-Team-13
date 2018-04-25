@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import '../css/login.css';
 import axios from 'axios';
 import url from '../serverurl';
+import swal from 'sweetalert';
 
 class Login extends Component {
 
@@ -54,14 +55,14 @@ class Login extends Component {
             .then((response) => {
                 console.log("In handle login after response on login page...", response.data);
                 if(response.data.message === "success") {
-                    alert('Success');
+                    swal("Login Successfull", "", "success");
                     this.setState({
                         isLoggedIn: true
                     }, () => {
                         this.props.history.push('/userhome');
                     })
                 } else {
-                    alert('Error');
+                    swal(response.data.message, "", "warning");
                 }
             })
     }
@@ -80,13 +81,13 @@ class Login extends Component {
                                 <img className="profile-img" src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=120"
                                      alt="" />
                                     <form className="form-signin" onSubmit={this.handleLogin}>
-                                        <input type="email" name="username" onChange={this.handleChange} className="form-control" placeholder="Email" required autoFocus />
+                                        <input type="text" name="username" onChange={this.handleChange} className="form-control" placeholder="username" required autoFocus />
                                             <input type="password" name="password" onChange={this.handleChange} className="form-control" placeholder="Password" required />
                                                 <button className="btn btn-lg btn-primary btn-block" type="submit">
                                                     Sign in</button>
                                     </form>
                             </div>
-                            <a href="#" className="text-center new-account">Create an account </a>
+                            <a href="/signup" className="text-center new-account">Create an account </a>
                         </div>
                     </div>
                 </div>

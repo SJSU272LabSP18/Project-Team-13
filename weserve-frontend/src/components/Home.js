@@ -14,12 +14,33 @@ import img5f from "../img/portfolio/fullsize/5.jpg";
 import img5t from "../img/portfolio/thumbnails/5.jpg";
 import img6f from "../img/portfolio/fullsize/6.jpg";
 import img6t from "../img/portfolio/thumbnails/6.jpg";
+import axios from "axios/index";
+import url from "../serverurl";
 
 class Home extends Component {
 
     constructor() {
         super();
+        this.state = {
+            isLoggedIn: false
+        }
         this.handleViewMore = this.handleViewMore.bind(this);
+    }
+
+    componentWillMount() {
+        axios.get(url + "/checksession", {withCredentials: true})
+            .then((response) => {
+                console.log("In checksession on Navbar",response.data);
+                if(response.data.sessionUsername !== "ERROR") {
+                    this.setState({
+                        isLoggedIn: true
+                    }, () => {
+                        if(this.state.isLoggedIn === true) {
+                            this.props.history.push('/userhome');
+                        }
+                    })
+                }
+            })
     }
 
     handleViewMore(e) {
@@ -45,7 +66,7 @@ class Home extends Component {
                                 <hr/>
                             </div>
                             <div className="col-lg-8 mx-auto">
-                                <p className="text-faded mb-5">Start Bootstrap can help you build better websites using the Bootstrap CSS framework! Just download your template and start going, no strings attached!</p>
+                                <p className="text-faded mb-5">WeServe helps you build better connections to Volunteers or Pro-Bono Consultants using the WeServe's smart Machine Learning framework! Just login start going, no strings attached!</p>
                                 <a className="btn btn-primary btn-xl js-scroll-trigger" href="#about">Find Out More</a>
                             </div>
                         </div>

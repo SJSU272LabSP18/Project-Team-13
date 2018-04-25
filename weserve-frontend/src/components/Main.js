@@ -5,6 +5,7 @@ import Home from './Home';
 import Signup from "./Signup";
 import Profile from "./Profile";
 import Userhome from "./Userhome";
+import Project from "./Project";
 
 const Main = () => (
     <Switch>
@@ -14,6 +15,7 @@ const Main = () => (
         <Route path = '/signup' component = { Signup } />
         <Route path = '/profile' component = { Profile } />
         <Route path = '/userhome' component = { Userhome } />
+        <Route path = '/project/:value/' component = { Project } />
     </Switch>
 )
 
