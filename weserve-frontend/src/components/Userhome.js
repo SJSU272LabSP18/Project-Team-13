@@ -13,12 +13,12 @@ class Userhome extends Component {
     constructor() {
         super();
         this.state = {
-            projects: []
-        }
+            projects: [],
+            convertedProjectName: ''
+        };
 
-        this.handleProjectClick = this.handleProjectClick.bind(this);
-        this.handleNGOProfileClick = this.handleNGOProfileClick.bind(this);
         this.getAllPostedProjects = this.getAllPostedProjects.bind(this);
+        this.getFirstThreeWords = this.getFirstThreeWords.bind(this);
     }
 
 
@@ -37,16 +37,25 @@ class Userhome extends Component {
             })
     }
 
-    handleProjectClick(e) {
-        e.preventDefault();
-        alert("On Project Click");
-        this.props.history.push('/project');
+    getFirstThreeWords(name) {
+        var firstThreeWords = '';
+        var stringToConvert = name;
+        var wordArray = stringToConvert.split(' ');
+
+        //form three word array
+        if(wordArray.length > 4) {
+            for(var i=0; i < 4;i++) {
+                firstThreeWords += ' ' + wordArray[i] ;
+            }
+        } else {
+            firstThreeWords = stringToConvert;
+        }
+
+        return firstThreeWords;
+
     }
 
-    handleNGOProfileClick(e) {
-        e.preventDefault();
-        alert("On NGO Profile Click");
-    }
+
 
     render() {
 
@@ -56,14 +65,20 @@ class Userhome extends Component {
             showAllProjects = [];
         } else {
             showAllProjects = this.state.projects.map(p => {
+
+
+                var firstWordsForProject = this.getFirstThreeWords(p.name);
+
+                var firstWordsForNGO = this.getFirstThreeWords(p.ngoName);
+
+
                 return (
-                    <div key={p.projectID} className="projectCard">
+                    <div key={p.id} className="projectCard">
                         <Card>
-                            <CardImg top width="300px" height="300px" src= { p.image } alt="Card image cap" />
+                            <CardImg top width="300px" height="300px" src= { p.imageUrl } alt="Card image cap" />
                             <CardBody id="cardBody">
-                                <CardTitle><Link to={`/project/${ p.projectID }`}> {p.projectName} </Link></CardTitle>
-                                <CardSubtitle> <a onClick={ this.handleNGOProfileClick } href='#'>Project Owner(NGO) should be link</a></CardSubtitle>
-                                {/*<CardText>{ p.description }</CardText>*/}
+                                <CardTitle id="cardTitle"><Link to={`/project/${ p.id }`}> { firstWordsForProject } </Link></CardTitle>
+                                <CardSubtitle id="cardSubtitle"> <Link to={`/user/${ p.ngoUserId }`}> { firstWordsForNGO }</Link> </CardSubtitle>
                             </CardBody>
                         </Card>
                     </div>

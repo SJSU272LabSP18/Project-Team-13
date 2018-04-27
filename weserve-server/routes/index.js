@@ -111,7 +111,7 @@ router.post('/logout', (req, res) => {
 router.get('/get_all_posted_projects', (req, res) => {
    console.log("In get_all_posted_projects", req.body);
    pool.getConnection((err, con) => {
-       var sql = 'select * from Projects;'
+       var sql = 'select * from projectsNew;'
        con.query(sql, null, (err, result) => {
            con.release();
 
@@ -134,7 +134,7 @@ router.get('/get_all_posted_projects', (req, res) => {
 router.post('/getspecificproject', (req, res) => {
    console.log("In get specific project...");
     pool.getConnection((err, con) => {
-        var sql = 'select * from Projects where projectID = ' + mysql.escape(req.body.projectID);
+        var sql = 'select * from projectsNew where id = ' + mysql.escape(req.body.projectID);
         con.query(sql, null, (err, result) => {
             con.release();
 

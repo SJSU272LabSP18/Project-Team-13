@@ -15,7 +15,9 @@ class Project extends Component {
             ngoName: '',
             image: '',
             description: '',
-            region: ''
+            region: '',
+            ngoName: '',
+            ngoId: ''
         }
         this.getProject = this.getProject.bind(this);
     }
@@ -32,11 +34,13 @@ class Project extends Component {
             .then((response) => {
                 console.log(response.data);
                 this.setState({
-                    projectID: response.data.result[0].projectID,
-                    projectName: response.data.result[0].projectName,
-                    image: response.data.result[0].image,
-                    description: response.data.result[0].description,
-                    region: response.data.result[0].region
+                    projectID: response.data.result[0].id,
+                    projectName: response.data.result[0].name,
+                    image: response.data.result[0].imageUrl,
+                    description: response.data.result[0].scope,
+                    region: response.data.result[0].region,
+                    ngoName: response.data.result[0].ngoName,
+                    ngoId: response.data.result[0].ngoUserId
                 })
             })
     }
@@ -59,6 +63,16 @@ class Project extends Component {
                             <div className="col-md-4">
                                 <h3 className="my-3">Project Description</h3>
                                 <p> { this.state.description } </p>
+                            </div>
+
+                            <div className="col-md-4">
+                                <h3 className="my-3">Posted By</h3>
+                                <p> { this.state.ngoName } </p>
+                            </div>
+
+                            <div className="col-md-4">
+                                <h3 className="my-3">Region</h3>
+                                <p> { this.state.region } </p>
                             </div>
 
                             <div id="recommendedVOrC">
