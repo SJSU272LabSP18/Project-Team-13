@@ -6,11 +6,13 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
-
+var MySQLStore = require('express-mysql-session')(session);
 var index = require('./routes/index');
 var users = require('./routes/users');
 
 var app = express();
+
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -30,8 +32,22 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+//Added to support session storing in database
+var options = {
+    host: 'weserveinstance.ccecdywbwqqr.us-west-1.rds.amazonaws.com',
+    port: 3305,
+    user: 'root',
+    password: 'rootroot',
+    database: 'weserve'
+};
+
+//creates sessionstore using above options
+var sessionStore = new MySQLStore(options);
+
+
 app.use( session({
     secret : 'abhabclkjbiyvyy',
+    store : sessionStore,
     duration : 30 * 60 * 1000,
     activeDuration : 5 * 60 * 1000,
     resave: false,

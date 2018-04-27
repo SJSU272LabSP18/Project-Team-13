@@ -46,6 +46,7 @@ class Home extends Component {
     handleViewMore(e) {
         e.preventDefault();
         console.log("Hello on handle view more");
+        this.props.history.push('/userhome');
     }
 
     render() {
@@ -87,29 +88,29 @@ class Home extends Component {
                             <div className="col-lg-3 col-md-6 text-center">
                                 <div className="service-box mt-5 mx-auto">
                                     <i className="fa fa-4x fa-diamond text-primary mb-3 sr-icons"></i>
-                                    <h3 className="mb-3">Sturdy Templates</h3>
-                                    <p className="text-muted mb-0">Our templates are updated regularly so they don't break.</p>
+                                    <h3 className="mb-3">Help NGOs</h3>
+                                    <p className="text-muted mb-0">Help NGOs and Feel Happy</p>
                                 </div>
                             </div>
                             <div className="col-lg-3 col-md-6 text-center">
                                 <div className="service-box mt-5 mx-auto">
                                     <i className="fa fa-4x fa-paper-plane text-primary mb-3 sr-icons"></i>
-                                    <h3 className="mb-3">Ready to Ship</h3>
-                                    <p className="text-muted mb-0">You can use this theme as is, or you can make changes!</p>
+                                    <h3 className="mb-3">Ready to Start</h3>
+                                    <p className="text-muted mb-0">NGO will get your match, selects you and you are ready to start</p>
                                 </div>
                             </div>
                             <div className="col-lg-3 col-md-6 text-center">
                                 <div className="service-box mt-5 mx-auto">
                                     <i className="fa fa-4x fa-newspaper-o text-primary mb-3 sr-icons"></i>
                                     <h3 className="mb-3">Up to Date</h3>
-                                    <p className="text-muted mb-0">We update dependencies to keep things fresh.</p>
+                                    <p className="text-muted mb-0">We update projects to keep things current.</p>
                                 </div>
                             </div>
                             <div className="col-lg-3 col-md-6 text-center">
                                 <div className="service-box mt-5 mx-auto">
                                     <i className="fa fa-4x fa-heart text-primary mb-3 sr-icons"></i>
                                     <h3 className="mb-3">Made with Love</h3>
-                                    <p className="text-muted mb-0">You have to make your websites with love these days!</p>
+                                    <p className="text-muted mb-0">We have strived hard and have made this website with great love!</p>
                                 </div>
                             </div>
                         </div>
@@ -125,10 +126,10 @@ class Home extends Component {
                                         <div className="portfolio-box-caption">
                                             <div className="portfolio-box-caption-content">
                                                 <div className="project-category text-faded">
-                                                    Category
+
                                                 </div>
                                                 <div className="project-name">
-                                                    Project Name
+                                                    Always be a helping hand
                                                 </div>
                                             </div>
                                         </div>
@@ -140,10 +141,10 @@ class Home extends Component {
                                         <div className="portfolio-box-caption">
                                             <div className="portfolio-box-caption-content">
                                                 <div className="project-category text-faded">
-                                                    Category
+
                                                 </div>
                                                 <div className="project-name">
-                                                    Project Name
+                                                    Social
                                                 </div>
                                             </div>
                                         </div>
@@ -155,10 +156,10 @@ class Home extends Component {
                                         <div className="portfolio-box-caption">
                                             <div className="portfolio-box-caption-content">
                                                 <div className="project-category text-faded">
-                                                    Category
+
                                                 </div>
                                                 <div className="project-name">
-                                                    Project Name
+                                                    IT
                                                 </div>
                                             </div>
                                         </div>
@@ -170,10 +171,10 @@ class Home extends Component {
                                         <div className="portfolio-box-caption">
                                             <div className="portfolio-box-caption-content">
                                                 <div className="project-category text-faded">
-                                                    Category
+
                                                 </div>
                                                 <div className="project-name">
-                                                    Project Name
+                                                    Mechanical
                                                 </div>
                                             </div>
                                         </div>
@@ -185,10 +186,10 @@ class Home extends Component {
                                         <div className="portfolio-box-caption">
                                             <div className="portfolio-box-caption-content">
                                                 <div className="project-category text-faded">
-                                                    Category
+
                                                 </div>
                                                 <div className="project-name">
-                                                    Project Name
+                                                    Be a Teacher
                                                 </div>
                                             </div>
                                         </div>
@@ -200,7 +201,7 @@ class Home extends Component {
                                         <div className="portfolio-box-caption">
                                             <div className="portfolio-box-caption-content">
                                                 <div className="project-category text-faded">
-                                                    Category
+
                                                 </div>
                                                 <div className="project-name">
                                                     View More
@@ -213,12 +214,6 @@ class Home extends Component {
                     </div>
                 </section>
 
-                {/*<section className="bg-dark text-white">*/}
-                    {/*<div className="container text-center">*/}
-                        {/*<h2 className="mb-4">Free Download at Start Bootstrap!</h2>*/}
-                        {/*<a className="btn btn-light btn-xl sr-button" href="http://startbootstrap.com/template-overviews/creative/">Download Now!</a>*/}
-                    {/*</div>*/}
-                {/*</section>*/}
 
                 <section id="contact">
                     <div className="container">
@@ -226,7 +221,7 @@ class Home extends Component {
                             <div className="col-lg-8 mx-auto text-center">
                                 <h2 className="section-heading">Let's Get In Touch!</h2>
                                 <hr className="my-4" />
-                                    <p className="mb-5">Ready to start your next project with us? That's great! Give us a call or send us an email and we will get back to you as soon as possible!</p>
+                                    <p className="mb-5">Ready to start helping with us? That's great! Give us a call or send us an email and we will get back to you as soon as possible!</p>
                             </div>
                         </div>
                         <div className="row">

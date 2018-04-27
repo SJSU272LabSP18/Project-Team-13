@@ -4,6 +4,9 @@ img {
     object-fit: cover;
 }
 
+/*#imageDiv {*/
+    /*max-height: 550px;*/
+/*}*/
 
 #recommendedVOrC {
     margin-top: 50px;
@@ -19,3 +22,7 @@ hr {
     margin-left: -10px;
 
 }
+
+/*#h3Funding, #h3bene, #pfunding, #pbene {*/
+    /*font-size: 12px;*/
+/*}*/

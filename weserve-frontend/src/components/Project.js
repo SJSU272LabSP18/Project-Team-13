@@ -17,7 +17,11 @@ class Project extends Component {
             description: '',
             region: '',
             ngoName: '',
-            ngoId: ''
+            ngoId: '',
+            need: '',
+            beneficiaries: '',
+            funding: ''
+
         }
         this.getProject = this.getProject.bind(this);
     }
@@ -40,7 +44,10 @@ class Project extends Component {
                     description: response.data.result[0].scope,
                     region: response.data.result[0].region,
                     ngoName: response.data.result[0].ngoName,
-                    ngoId: response.data.result[0].ngoUserId
+                    ngoId: response.data.result[0].ngoUserId,
+                    need: response.data.result[0].need,
+                    beneficiaries: response.data.result[0].beneficiaries,
+                    funding: response.data.result[0].funding
                 })
             })
     }
@@ -57,23 +64,32 @@ class Project extends Component {
 
                         </h1>
                         <div className="row">
-                            <div className="col-md-8">
+                            <div id="imageDiv" className="col-md-8">
                                 <img className="img-fluid" src= { this.state.image }  alt="" width="100%" height="100%"/>
+                                <br/>
+                                <div className="col-md-4 float-left">
+                                    <h3 className="my-3">Posted By</h3>
+                                    <p> { this.state.ngoName } </p>
+                                </div>
+
+
+                                <div className="col-md-4 float-left">
+                                    <h3 className="my-3">Region</h3>
+                                    <p> { this.state.region } </p>
+                                </div>
                             </div>
                             <div className="col-md-4">
-                                <h3 className="my-3">Project Description</h3>
+                                <h3 className="my-3">Description</h3>
                                 <p> { this.state.description } </p>
+                                <h3 className="my-3">Need</h3>
+                                <p> { this.state.need } </p>
+                                <h3 className="my-3">Funding</h3>
+                                <p> { this.state.funding } </p>
+                                <h3 className="my-3">Beneficiaries</h3>
+                                <p> { this.state.beneficiaries } </p>
                             </div>
 
-                            <div className="col-md-4">
-                                <h3 className="my-3">Posted By</h3>
-                                <p> { this.state.ngoName } </p>
-                            </div>
 
-                            <div className="col-md-4">
-                                <h3 className="my-3">Region</h3>
-                                <p> { this.state.region } </p>
-                            </div>
 
                             <div id="recommendedVOrC">
                                 <h1>Recommended Volunteers</h1>
