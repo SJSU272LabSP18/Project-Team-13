@@ -9,6 +9,7 @@ var session = require('express-session');
 var MySQLStore = require('express-mysql-session')(session);
 var index = require('./routes/index');
 var users = require('./routes/users');
+var es = require('./routes/es')
 
 var app = express();
 
@@ -56,6 +57,7 @@ app.use( session({
 
 app.use('/', index);
 app.use('/users', users);
+app.use('/es', es)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
