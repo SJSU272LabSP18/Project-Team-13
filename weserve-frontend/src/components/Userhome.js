@@ -16,17 +16,37 @@ class Userhome extends Component {
             projects: [],
             convertedProjectName: '',
             recommendedProjectIDs: [],
-            recommendedProjects: []
+            recommendedProjects: [],
+            username: '',
+            userID: 0,
         };
 
         this.getAllPostedProjects = this.getAllPostedProjects.bind(this);
         this.getFirstThreeWords = this.getFirstThreeWords.bind(this);
         this.getRecommendations = this.getRecommendations.bind(this);
+        this.checkSession = this.checkSession.bind(this);
     }
 
     componentWillMount() {
+        this.checkSession();
         this.getAllPostedProjects();
-        this.getRecommendations();
+        
+    }
+
+    checkSession() {
+        axios.get(url + "/checksession", {withCredentials: true})
+            .then((response) => {
+                console.log("In checksession on Navbar",response.data);
+                if(response.data.sessionUsername !== "ERROR") {
+                    this.setState({
+                        username: response.data.sessionUsername,
+                        userID: response.data.sessionUserID
+                    }, () => {
+                        console.log("AFter checking session on userhome",this.state.userID);
+                        this.getRecommendations();
+                    })
+                }
+            })
     }
 
     getAllPostedProjects() {
@@ -45,8 +65,8 @@ class Userhome extends Component {
         var wordArray = stringToConvert.split(' ');
 
         //form three word array
-        if(wordArray.length > 4) {
-            for(var i=0; i < 4;i++) {
+        if(wordArray.length > 3) {
+            for(var i=0; i < 3;i++) {
                 firstThreeWords += ' ' + wordArray[i] ;
             }
         } else {
@@ -59,7 +79,8 @@ class Userhome extends Component {
 
     getRecommendations() {
         var p = '';
-        var userId = 1;
+        var userId = this.state.userID;
+        console.log("In getRecommendations", userId);
         var count = 4;
 
         function getRecs(callback) {

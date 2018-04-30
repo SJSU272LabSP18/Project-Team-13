@@ -75,11 +75,13 @@ router.post('/login', (req, res, next) => {
                if(result.length > 0) {
                    console.log("User found...", result);
                    req.session.username = result[0].username;
+                   req.session.userID = result[0].userID;
                    console.log("Session Started...", req.session.username );
                    res.json({
                        message: "success",
                        result: result[0],
-                       sessionUsername: req.session.username
+                       sessionUsername: req.session.username,
+                       sessionUserID: req.session.userID
                    })
                } else {
                    res.json({
@@ -95,7 +97,10 @@ router.post('/login', (req, res, next) => {
 router.get('/checksession', (req, res) => {
     console.log("In checksession...",req.session.username);
     if(req.session.username) {
-        res.json({sessionUsername: req.session.username});
+        res.json({
+            sessionUsername: req.session.username, 
+            sessionUserID: req.session.userID
+        });
     }
 
     else
