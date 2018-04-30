@@ -21,17 +21,6 @@ var client = new elasticsearch.Client({
 //     }
 // });
 
-// // get request on data ==> weserve/projects/1
-// client.get({
-//     index: 'weserve',
-//     type: 'users',
-//     id: 1
-// }, function (error) {
-//     if (error) {
-//         console.trace('cannot get test/movies/3')
-//     }
-// });
-
 // // check if index exists
 // elasticClient.indices.exists({
 //     index: indexName
@@ -90,7 +79,13 @@ router.get('/get_specific/:index/:type/:id', function(req,res) {
     }));
 });
 
-router.get('/get_user_rec/:id/:num', function(req,res) {
+// Get Project Recommendations for User
+// Params:
+//    id  - user ID
+//    num - # of projects to return
+// Output:
+//    res - array of project IDs
+router.get('/rec_projects_for_user/:id/:num', function(req,res) {
     function getUser(callback) {
         client.get({
             index: 'weserve',
@@ -117,6 +112,48 @@ router.get('/get_user_rec/:id/:num', function(req,res) {
                 });
             }
             userRecSearch(function(results) {
+                var hits = results['hits']['hits'].slice(0,req.params.num);
+                var result = hits.map(a => a._id);
+                console.log(result);
+                res.send(result);
+            });
+        }
+    });
+});
+
+// Get User Recommendations for Project
+// Params:
+//    id  - project ID
+//    num - # of projects to return
+// Output:
+//    res - array of user IDs
+router.get('/rec_users_for_project/:id/:num', function(req,res) {
+    function getProject(callback) {
+        client.get({
+            index: 'weserve',
+            type: 'projects',
+            id: req.params.id
+        }).then(function(response) {
+            callback(response);
+        });
+    }
+    getProject(function(response) {
+        src=response._source;
+        if(src.hasOwnProperty('@model') && src['@model'].hasOwnProperty('factor')){
+            var raw_vec = src['@model']['factor'];
+            var query_vec = reverse_convert(raw_vec);
+            var query = fn_query(query_vec, q='*', cosine=false);
+
+            function projectRecSearch(callback) {
+                client.search({
+                    index: 'weserve',
+                    type: 'users',
+                    body: query
+                }).then(function(results) {
+                    callback(results);
+                });
+            }
+            projectRecSearch(function(results) {
                 var hits = results['hits']['hits'].slice(0,req.params.num);
                 var result = hits.map(a => a._id);
                 console.log(result);
