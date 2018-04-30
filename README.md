@@ -11,5 +11,5 @@
    
    NGO posts the project. Students and pro  bono consultants creates their profile, interests and expertise and timeline they might be available to work/help. System applies intelligent algorithm to match them.
    
-   **Skills Required** Node.JS, Java Script, MySQL
+   **Skills Required** ReactJS, Node.JS, Java Script, MySQL
  
