@@ -83,9 +83,9 @@ router.get('/get_specific/:index/:type/:id', function(req,res) {
 // Params:
 //    id  - user ID
 //    num - # of projects to return
-// Output:
-//    res - array of project IDs
+// Output: array of project IDs
 router.get('/rec_projects_for_user/:id/:num', function(req,res) {
+    console.log('In recommend projects for users...')
     function getUser(callback) {
         client.get({
             index: 'weserve',
@@ -114,8 +114,7 @@ router.get('/rec_projects_for_user/:id/:num', function(req,res) {
             userRecSearch(function(results) {
                 var hits = results['hits']['hits'].slice(0,req.params.num);
                 var result = hits.map(a => a._id);
-                console.log(result);
-                res.send(result);
+                res.json({result: result});
             });
         }
     });
@@ -125,9 +124,9 @@ router.get('/rec_projects_for_user/:id/:num', function(req,res) {
 // Params:
 //    id  - project ID
 //    num - # of projects to return
-// Output:
-//    res - array of user IDs
+// Output: array of user IDs
 router.get('/rec_users_for_project/:id/:num', function(req,res) {
+    console.log('In recommend users for project...')
     function getProject(callback) {
         client.get({
             index: 'weserve',
@@ -157,7 +156,7 @@ router.get('/rec_users_for_project/:id/:num', function(req,res) {
                 var hits = results['hits']['hits'].slice(0,req.params.num);
                 var result = hits.map(a => a._id);
                 console.log(result);
-                res.send(result);
+                res.json({result: result});
             });
         }
     });

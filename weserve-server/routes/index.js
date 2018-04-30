@@ -156,10 +156,10 @@ router.post('/getspecificproject', (req, res) => {
 
 router.post('/getmultipleprojects', (req, res) => {
     console.log("In get multiple projects...");
-    console.log(req.body.recommendedProjectIDs)
+    console.log(req.body)
 
     pool.getConnection((err, con) => {
-        var sql = 'select * from projectsNew where id in (' + mysql.escape(req.body.recommendedProjectIDs) + ')';
+        var sql = 'select * from projectsNew where id in (' + req.body.projectIDs + ')';
         console.log(sql)
         con.query(sql, null, (err, result) => {
             con.release();
