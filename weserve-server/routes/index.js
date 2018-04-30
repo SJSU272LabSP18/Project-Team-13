@@ -154,5 +154,30 @@ router.post('/getspecificproject', (req, res) => {
     })
 });
 
+router.post('/getmultipleprojects', (req, res) => {
+    console.log("In get multiple projects...");
+    console.log(req.body.recommendedProjectIDs)
+
+    pool.getConnection((err, con) => {
+        var sql = 'select * from projectsNew where id in (' + mysql.escape(req.body.recommendedProjectIDs) + ')';
+        console.log(sql)
+        con.query(sql, null, (err, result) => {
+            con.release();
+
+            if(err) {
+                console.log("Error in querying the db for getting projects");
+                res.json({message: "Error in querying the db for getting projects"});
+            } else {
+                if(result.length > 0) {
+                    console.log("After getting all projects...", result);
+                    res.json({
+                        message: 'success',
+                        result: result
+                    })
+                }
+            }
+        })
+    })
+});
 
 module.exports = router;
