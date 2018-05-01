@@ -20,15 +20,67 @@ class Project extends Component {
             ngoId: '',
             need: '',
             beneficiaries: '',
-            funding: ''
+            funding: '',
+            recommendedUsers: [],
+            loggedInUserType: '',
+            loggedInUsername: '',
+            loggedInUserID: ''
 
         }
         this.getProject = this.getProject.bind(this);
+        this.getVolunteers = this.getVolunteers.bind(this);
+        this.checkSession = this.checkSession.bind(this);
     }
 
     componentWillMount() {
         this.getProject();
+        //replace this with Matthew's elastic search query
+        this.checkSession();
+        this.getVolunteers();
+
     }
+
+    checkSession() {
+        axios.get(url + "/checksession", {withCredentials: true})
+            .then((response) => {
+                console.log("In checksession on project details page",response.data);
+                if(response.data.sessionUsername !== "ERROR") {
+                    this.setState({
+                        loggedInUsername: response.data.sessionUsername,
+                        loggedInUserID: response.data.sessionUserID,
+                        loggedInUserType: response.data.usertype
+                    }, ()=> {
+                        console.log("after checking session on project details page:", this.state.loggedInUserID);
+                    })
+                }
+            })
+    }
+
+
+    getVolunteers() {
+        var tempArray = [];
+        var user1 = {
+            image: 'https://source.unsplash.com/Kfk-TPxLVL0',
+            name: 'Venkatesh Devale',
+            type: 'volunteer',
+            email: 'venkatesh@devale.com',
+            region: 'India'
+        };
+        var user2 = {
+            image: 'https://source.unsplash.com/Kfk-TPxLVL0',
+            name: 'Sajjan',
+            type: 'volunteer',
+            email: 's@j.com',
+            region: 'India'
+        };
+        tempArray.push(user1);
+        tempArray.push(user2);
+        this.setState({
+            recommendedUsers: tempArray
+        })
+    }
+
+
 
     getProject() {
         var data = {
@@ -52,7 +104,56 @@ class Project extends Component {
             })
     }
 
+
     render() {
+
+        let recommendedUsersToShow = null;
+        let hireButton = null;
+        if(this.state.ngoId === this.state.loggedInUserID) {
+            hireButton = <button className="btn-primary">Hire</button>;
+        }
+        if(this.state.recommendedUsers === []) {
+            recommendedUsersToShow = [];
+        } else {
+            recommendedUsersToShow = this.state.recommendedUsers.map( u => {
+
+               return (
+                   <tr key={u.name}>
+
+                       <td>
+                           <div>
+                               <img id="volunteer_user_image" src={ u.image } alt='user image'/>
+                           </div>
+                       </td>
+                       <td>
+                           <div>
+                               <p> { u.name } </p>
+                           </div>
+                       </td>
+                       <td>
+                           <div>
+                               <p> { u.type } </p>
+                           </div>
+                       </td>
+                       <td>
+                           <div>
+                               <p> { u.email } </p>
+                           </div>
+                       </td>
+                       <td>
+                           <div>
+                               <p> { u.region } </p>
+                               <div>
+                                   { hireButton }
+                               </div>
+                           </div>
+                       </td>
+                   </tr>
+               );
+            });
+        }
+
+
         return(
             <div className="Project">
                 <div id="ShowingBlackBackground">
@@ -94,7 +195,26 @@ class Project extends Component {
                             <div id="recommendedVOrC">
                                 <h1>Recommended Volunteers</h1>
                                 <hr/>
+
+                                <table className='table table-hover'>
+                                    <thead>
+                                    <tr className='table-secondary'>
+                                        <th id='volunteerImage'>Image</th>
+                                        <th id='volunteerName'>Name</th>
+                                        <th id='volunteerType'>Type</th>
+                                        <th id='volunteerEmail'>Email</th>
+                                        <th id='volunteerRegion'>Region</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        { recommendedUsersToShow }
+                                    </tbody>
+
+                                </table>
                             </div>
+
+                            {/*showing dumy volunteers*/}
+
 
                         </div>
                     </div>

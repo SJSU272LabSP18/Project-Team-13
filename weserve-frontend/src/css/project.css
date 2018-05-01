@@ -11,6 +11,8 @@ img {
 #recommendedVOrC {
     margin-top: 50px;
     margin-left: 10px;
+    width: 1410px;
+    height: auto;
 }
 
 #projectName {
@@ -20,6 +22,12 @@ img {
 hr {
     max-width: 1300px;
     margin-left: -10px;
+
+}
+
+#volunteer_user_image {
+    max-width: 100px;
+    max-height: 100px;
 
 }
 

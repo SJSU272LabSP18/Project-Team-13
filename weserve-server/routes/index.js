@@ -76,6 +76,7 @@ router.post('/login', (req, res, next) => {
                    console.log("User found...", result);
                    req.session.username = result[0].username;
                    req.session.userID = result[0].userID;
+                   req.session.usertype = result[0].userType;
                    console.log("Session Started...", req.session.username );
                    res.json({
                        message: "success",
@@ -99,7 +100,8 @@ router.get('/checksession', (req, res) => {
     if(req.session.username) {
         res.json({
             sessionUsername: req.session.username, 
-            sessionUserID: req.session.userID
+            sessionUserID: req.session.userID,
+            usertype: req.session.usertype
         });
     }
 
