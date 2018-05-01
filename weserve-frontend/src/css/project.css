@@ -10,15 +10,19 @@ img {
 
 #recommendedVOrC {
     margin-top: 50px;
-    margin-left: 10px;
-    width: 1410px;
+    /*margin-left: 10px;*/
+    width: 1300px;
     height: auto;
 }
 
+/*#changes {*/
+    /*margin-left: -10px;*/
+/*}*/
+
 #currentHiredVorC {
     margin-top: 50px;
-    margin-left: 10px;
-    width: 1410px;
+    /*margin-left: 10px;*/
+    width: 1300px;
     height: auto;
 }
 

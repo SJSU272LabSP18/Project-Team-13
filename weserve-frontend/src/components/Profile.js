@@ -88,7 +88,7 @@ class Profile extends Component {
             <div class="col-md-3">
             <div class="text-center">
 
-            <img src={this.state.image} class="img-rounded img-responsive" alt="" />
+            <img id="imgProfile" src={this.state.image} class="img-rounded img-responsive" alt="" />
             <h5></h5>
             </div>
             </div>
