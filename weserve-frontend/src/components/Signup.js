@@ -115,8 +115,11 @@ class Signup extends Component {
                                         <label className="radio-inline ml-2" ><input type="radio" id="radioButtonProBono" name="radioBtn" value="consultant" />   Consultant</label>
 
                                     <input type="text" name="username" onChange={this.handleChange} className="form-control" placeholder="username" required autoFocus />
+            &nbsp;
                                     <input type="email" name="email" onChange={this.handleChange} className="form-control" placeholder="Email" required />
-                                    <input type="text" name="password" onChange={this.handleChange} id="password" className="form-control" placeholder="Password" required />
+            &nbsp;
+                                    <input type="password" name="password" onChange={this.handleChange} id="password" className="form-control" placeholder="Password" required />
+            &nbsp;
                                     <input type="password" name="confirmpassword" onChange={this.handleChange} id="confirmpassword" className="form-control" placeholder="Confirm Password" required />
 
                                     <br/>

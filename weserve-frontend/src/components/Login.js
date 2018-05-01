@@ -82,6 +82,7 @@ class Login extends Component {
                                      alt="" />
                                     <form className="form-signin" onSubmit={this.handleLogin}>
                                         <input type="text" name="username" onChange={this.handleChange} className="form-control" placeholder="username" required autoFocus />
+            &nbsp;
                                             <input type="password" name="password" onChange={this.handleChange} className="form-control" placeholder="Password" required />
                                                 <button className="btn btn-lg btn-primary btn-block" type="submit">
                                                     Sign in</button>
