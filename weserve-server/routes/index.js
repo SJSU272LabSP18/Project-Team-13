@@ -213,4 +213,90 @@ router.post('/getmultipleusers', (req, res) => {
     })
 });
 
+
+router.post('/saveVolunteerForProject', (req, res) => {
+    console.log("In saveVolunteerForProject", req.body);
+    var userid = req.body.userid;
+    var projectid = req.body.projectid;
+    pool.getConnection((err, con) => {
+        if(err) {
+            console.log("Error connecting to mysql in saveVolunteerForProject");
+            res.json({
+                message: "Error connecting to mysql in saveVolunteerForProject"
+            })
+        } else {
+
+            var sql1 = "select * from Hired_Users_Projects where userid = ?";
+            con.query(sql1, userid, (err, result) => {
+                if(err) {
+                    console.log("Error in querying the db for inserting volunteer for the projects", err);
+                    res.json({message: "Error in querying the db for inserting volunteer for the projects"});
+                } else {
+                    if(result.length == 0) {
+                        var sql = "insert into Hired_Users_Projects (userid, projectid) values (?, ?)";
+                        con.query(sql, [userid, projectid], (err, result1) => {
+                            if(err) {
+                                console.log("Error in querying the db for inserting volunteer for the projects", err);
+                                res.json({message: "Error in querying the db for inserting volunteer for the projects"});
+                            } else {
+                                console.log("Volunteer inserted successfully", result1);
+                                res.json({
+                                    message: "Volunteer Hired"
+                                })
+                            }
+                        })
+                    } else {
+                        if(result.length > 0) {
+                            console.log("The same user is already hired");
+                            res.json({
+                                message: "This volunteer is already hired, check current volunteers above"
+                            })
+                        }
+                    }
+                }
+            })
+
+
+        }
+    })
+});
+
+
+router.post('/getAllVolunteersForProject', (req, res) => {
+    console.log("In getAllVolunteersForProject", req.body);
+    var projectid = req.body.projectid;
+    pool.getConnection((err, con) => {
+        if(err) {
+            console.log("Error connecting to mysql in getAllVolunteersForProject");
+            res.json({
+                message: "Error connecting to mysql in getAllVolunteersForProject"
+            })
+        } else {
+            var sql = "select * from Users as u inner join Hired_Users_Projects as hup on u.userID = hup.userid where hup.projectid = ?";
+            con.query(sql, [projectid], (err, result) => {
+                if(err) {
+                    console.log("Error in querying the db for getAllVolunteersForProject", err);
+                    res.json({message: "Error in querying the db for getting volunteer for the projects"});
+                } else {
+                    if(result.length > 0) {
+                        console.log("Got all hired volunteers successfully");
+                        res.json({
+                            message: "Got all hired volunteers successfully",
+                            result: result
+                        })
+                    } else {
+                        console.log("No hired volunteers yet");
+                        res.json({
+                            message: "No hired volunteers yet",
+                            result: []
+                        })
+                    }
+
+                }
+            })
+        }
+    })
+});
+
+
 module.exports = router;

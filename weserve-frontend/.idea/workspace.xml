@@ -21,6 +21,7 @@
               <caret line="48" column="45" lean-forward="false" selection-start-line="48" selection-start-column="45" selection-end-line="48" selection-end-column="45" />
               <folding>
                 <element signature="e#0#41#0" expanded="true" />
+                <marker date="1525161421745" expanded="true" signature="2239:2242" ph="&lt;h1/&gt;" />
               </folding>
             </state>
           </provider>
@@ -56,9 +57,11 @@
       <file leaf-file-name="Project.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/components/Project.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="380">
-              <caret line="149" column="28" lean-forward="false" selection-start-line="149" selection-start-column="28" selection-end-line="149" selection-end-column="28" />
-              <folding />
+            <state relative-caret-position="405">
+              <caret line="152" column="60" lean-forward="false" selection-start-line="152" selection-start-column="60" selection-end-line="152" selection-end-column="60" />
+              <folding>
+                <element signature="e#0#41#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -66,8 +69,8 @@
       <file leaf-file-name="project.css" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/css/project.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="399">
-              <caret line="30" column="0" lean-forward="false" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
+            <state relative-caret-position="357">
+              <caret line="21" column="17" lean-forward="false" selection-start-line="21" selection-start-column="17" selection-end-line="21" selection-end-column="17" />
               <folding />
             </state>
           </provider>
@@ -259,12 +262,12 @@
       <workItem from="1524684115311" duration="204000" />
       <workItem from="1524718338986" duration="283000" />
       <workItem from="1524858845150" duration="6733000" />
-      <workItem from="1525136919206" duration="5082000" />
+      <workItem from="1525136919206" duration="9864000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="62429000" />
+    <option name="totallyTimeSpent" value="67211000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
@@ -361,7 +364,7 @@
         <state relative-caret-position="442">
           <caret line="28" column="40" lean-forward="true" selection-start-line="26" selection-start-column="35" selection-end-line="28" selection-end-column="40" />
           <folding>
-            <element signature="e#0#41#0" expanded="true" />
+            <element signature="e#0#41#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -435,7 +438,7 @@
         <state relative-caret-position="442">
           <caret line="28" column="40" lean-forward="true" selection-start-line="26" selection-start-column="35" selection-end-line="28" selection-end-column="40" />
           <folding>
-            <element signature="e#0#41#0" expanded="true" />
+            <element signature="e#0#41#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -617,7 +620,7 @@
         <state relative-caret-position="1207">
           <caret line="80" column="91" lean-forward="false" selection-start-line="80" selection-start-column="84" selection-end-line="80" selection-end-column="91" />
           <folding>
-            <element signature="e#0#41#0" expanded="true" />
+            <element signature="e#0#41#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -661,15 +664,8 @@
           <caret line="48" column="45" lean-forward="false" selection-start-line="48" selection-start-column="45" selection-end-line="48" selection-end-column="45" />
           <folding>
             <element signature="e#0#41#0" expanded="true" />
+            <marker date="1525161421745" expanded="true" signature="2239:2242" ph="&lt;h1/&gt;" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/css/project.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="399">
-          <caret line="30" column="0" lean-forward="false" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -696,11 +692,21 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/css/project.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="21" column="17" lean-forward="false" selection-start-line="21" selection-start-column="17" selection-end-line="21" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/Project.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="380">
-          <caret line="149" column="28" lean-forward="false" selection-start-line="149" selection-start-column="28" selection-end-line="149" selection-end-column="28" />
-          <folding />
+        <state relative-caret-position="405">
+          <caret line="152" column="60" lean-forward="false" selection-start-line="152" selection-start-column="60" selection-end-line="152" selection-end-column="60" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

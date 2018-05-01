@@ -4,6 +4,7 @@ import axios from 'axios';
 import url from '../serverurl';
 import Footer from './Footer';
 import '../css/project.css';
+import swal from 'sweetalert';
 
 class Project extends Component {
 
@@ -24,17 +25,44 @@ class Project extends Component {
             recommendedUsers: [],
             loggedInUserType: '',
             loggedInUsername: '',
-            loggedInUserID: ''
+            loggedInUserID: '',
+            message: '',
+            currentHiredVolunteers: []
         }
         this.getProject = this.getProject.bind(this);
         this.getRecommendedUsers = this.getRecommendedUsers.bind(this);
         this.checkSession = this.checkSession.bind(this);
+        this.handleHireButtonClick = this.handleHireButtonClick.bind(this);
+        this.getHiredVolunteersForThisProject = this.getHiredVolunteersForThisProject.bind(this);
     }
 
     componentWillMount() {
         this.getProject();
         this.checkSession();
+        this.getHiredVolunteersForThisProject();
     }
+
+    getHiredVolunteersForThisProject() {
+        var project = {
+            projectid: this.props.match.params.value
+        }
+        axios.post(url + '/getAllVolunteersForProject', project, { withCredentials: true })
+            .then((response) => {
+                console.log("After getAllVolunteersForProject", response.data);
+                if(response.data.message === "Got all hired volunteers successfully") {
+                    this.setState({
+                        currentHiredVolunteers: response.data.result,
+                        message: ''
+                    })
+                } else if(response.data.message === "No hired volunteers yet") {
+                    this.setState({
+                        message: "No volunteers hired yet"
+                    })
+                }
+            })
+    }
+
+
 
     checkSession() {
         axios.get(url + "/checksession", {withCredentials: true})
@@ -48,6 +76,9 @@ class Project extends Component {
                     }, ()=> {
                         console.log("after checking session on project details page:", this.state.loggedInUserID);
                     })
+                } else {
+                    swal("Please login again");
+                    this.props.history.push('/login');
                 }
             })
     }
@@ -102,16 +133,80 @@ class Project extends Component {
         }.bind(this));
     }
 
+    handleHireButtonClick(e) {
+        e.preventDefault();
+        var userid = e.target.id;
+        var projectid = this.state.projectID;
+        var user = {
+            userid: Number(userid),
+            projectid: projectid
+        }
+        console.log("User in handleHireButtonClick", user);
+        axios.post(url + '/saveVolunteerForProject', user, { withCredentials: true })
+            .then((response) => {
+                console.log(response.data);
+                if(response.data.message === "Volunteer Hired") {
+                    swal(response.data.message, "", "success");
+                    window.location.reload(true);
+                }
+                else if(response.data.message === "This volunteer is already hired, check current volunteers above") {
+                    swal(response.data.message, "", "warning");
+                }
+            })
+    }
+
     render() {
         let recommendedUsersToShow = null;
+        let currentHiredUsersToShow = null;
         let hireButton = null;
-        if(this.state.ngoId === this.state.loggedInUserID) {
-            hireButton = <button className="btn-primary">Hire</button>;
+        var buttonStyle = {
+            display: "none"
         }
+
+        if(this.state.ngoId === this.state.loggedInUserID) {
+            buttonStyle.display = "block"
+        }
+
+        //hiredCurrentUsers
+        if(this.state.currentHiredVolunteers === []) {
+            currentHiredUsersToShow = [];
+        } else {
+            currentHiredUsersToShow = this.state.currentHiredVolunteers.map( u => {
+                return (
+                    <tr key={u.name}>
+                        <td>
+                            <div>
+                                <img id="volunteer_user_image" src={ u.image } alt='user image'/>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <p> { u.firstName } {u.lastName} </p>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <p> { u.email } </p>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <p> { u.region } </p>
+                            </div>
+                        </td>
+                    </tr>
+                );
+            });
+        }
+
+
+
+        //recommendedUsers
         if(this.state.recommendedUsers === []) {
             recommendedUsersToShow = [];
         } else {
             recommendedUsersToShow = this.state.recommendedUsers.map( u => {
+
                return (
                    <tr key={u.name}>
                        <td>
@@ -133,7 +228,7 @@ class Project extends Component {
                            <div>
                                <p> { u.region } </p>
                                <div>
-                                   { hireButton }
+                                   <button id={ u.userID } style={ buttonStyle } onClick={ this.handleHireButtonClick } className="btn-primary">Hire</button>
                                </div>
                            </div>
                        </td>
@@ -175,6 +270,29 @@ class Project extends Component {
                                 <p> { this.state.funding } </p>
                                 <h3 className="my-3">Beneficiaries</h3>
                                 <p> { this.state.beneficiaries } </p>
+                            </div>
+
+                            <div id="currentHiredVorC">
+                                <h1>Hired Volunteers</h1>
+                                <hr/>
+                                <div>
+                                    { this.state.message }
+                                </div>
+                                <br/>
+                                <table className='table table-hover'>
+                                    <thead>
+                                    <tr className='table-secondary'>
+                                        <th id='volunteerImage'>Image</th>
+                                        <th id='volunteerName'>Name</th>
+                                        <th id='volunteerEmail'>Email</th>
+                                        <th id='volunteerRegion'>Region</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    { currentHiredUsersToShow }
+                                    </tbody>
+
+                                </table>
                             </div>
 
                             <div id="recommendedVOrC">
