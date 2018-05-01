@@ -150,7 +150,7 @@ router.post('/getspecificproject', (req, res) => {
                 res.json({message: "Error in querying the db for getting projects"});
             } else {
                 if(result.length > 0) {
-                    console.log("After getting all projects...", result);
+                    console.log("After getting specific projects...", result);
                     res.json({
                         message: 'success',
                         result: result
@@ -172,11 +172,37 @@ router.post('/getmultipleprojects', (req, res) => {
             con.release();
 
             if(err) {
-                console.log("Error in querying the db for getting projects");
-                res.json({message: "Error in querying the db for getting projects"});
+                console.log("Error in querying the db for getting multiple projects");
+                res.json({message: "Error in querying the db for getting multiple projects"});
             } else {
                 if(result.length > 0) {
-                    console.log("After getting all projects...", result);
+                    console.log("After getting multiple projects...", result);
+                    res.json({
+                        message: 'success',
+                        result: result
+                    })
+                }
+            }
+        })
+    })
+});
+
+router.post('/getmultipleusers', (req, res) => {
+    console.log("In get multiple users...");
+    console.log(req.body)
+
+    pool.getConnection((err, con) => {
+        var sql = 'select * from Users where userID in (' + req.body.userIDs + ')';
+        console.log(sql)
+        con.query(sql, null, (err, result) => {
+            con.release();
+
+            if(err) {
+                console.log("Error in querying the db for getting users");
+                res.json({message: "Error in querying the db for getting users"});
+            } else {
+                if(result.length > 0) {
+                    console.log("After getting multiple users...", result);
                     res.json({
                         message: 'success',
                         result: result

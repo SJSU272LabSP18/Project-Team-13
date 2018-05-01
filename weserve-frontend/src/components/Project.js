@@ -25,19 +25,15 @@ class Project extends Component {
             loggedInUserType: '',
             loggedInUsername: '',
             loggedInUserID: ''
-
         }
         this.getProject = this.getProject.bind(this);
-        this.getVolunteers = this.getVolunteers.bind(this);
+        this.getRecommendedUsers = this.getRecommendedUsers.bind(this);
         this.checkSession = this.checkSession.bind(this);
     }
 
     componentWillMount() {
         this.getProject();
-        //replace this with Matthew's elastic search query
         this.checkSession();
-        this.getVolunteers();
-
     }
 
     checkSession() {
@@ -55,32 +51,6 @@ class Project extends Component {
                 }
             })
     }
-
-
-    getVolunteers() {
-        var tempArray = [];
-        var user1 = {
-            image: 'https://source.unsplash.com/Kfk-TPxLVL0',
-            name: 'Venkatesh Devale',
-            type: 'volunteer',
-            email: 'venkatesh@devale.com',
-            region: 'India'
-        };
-        var user2 = {
-            image: 'https://source.unsplash.com/Kfk-TPxLVL0',
-            name: 'Sajjan',
-            type: 'volunteer',
-            email: 's@j.com',
-            region: 'India'
-        };
-        tempArray.push(user1);
-        tempArray.push(user2);
-        this.setState({
-            recommendedUsers: tempArray
-        })
-    }
-
-
 
     getProject() {
         var data = {
@@ -100,13 +70,39 @@ class Project extends Component {
                     need: response.data.result[0].need,
                     beneficiaries: response.data.result[0].beneficiaries,
                     funding: response.data.result[0].funding
+                }, () => {
+                    console.log("After getting specific project on project page",this.state.projectID);
+                    this.getRecommendedUsers();
                 })
             })
     }
 
+    getRecommendedUsers() {
+        var projectId = this.state.projectID;
+        console.log("In getRecommendedUsers", projectId);
+        var count = 10;
+
+        function getRecs(callback) {
+            axios.get(url + '/es/rec_users_for_project/' + projectId + '/' + count, { withCredentials: true })
+                .then(function(response) {
+                    callback(response);
+                });
+        }
+        getRecs(function(response) {
+            var data = {
+                userIDs: response.data.result
+            }
+            axios.post(url + '/getmultipleusers', data ,{ withCredentials: true })
+                .then((response) => {
+                    console.log(response.data);
+                    this.setState({
+                        recommendedUsers: response.data.result
+                    })
+                })
+        }.bind(this));
+    }
 
     render() {
-
         let recommendedUsersToShow = null;
         let hireButton = null;
         if(this.state.ngoId === this.state.loggedInUserID) {
@@ -116,10 +112,8 @@ class Project extends Component {
             recommendedUsersToShow = [];
         } else {
             recommendedUsersToShow = this.state.recommendedUsers.map( u => {
-
                return (
                    <tr key={u.name}>
-
                        <td>
                            <div>
                                <img id="volunteer_user_image" src={ u.image } alt='user image'/>
@@ -127,12 +121,7 @@ class Project extends Component {
                        </td>
                        <td>
                            <div>
-                               <p> { u.name } </p>
-                           </div>
-                       </td>
-                       <td>
-                           <div>
-                               <p> { u.type } </p>
+                               <p> { u.firstName } {u.lastName} </p>
                            </div>
                        </td>
                        <td>
@@ -153,7 +142,6 @@ class Project extends Component {
             });
         }
 
-
         return(
             <div className="Project">
                 <div id="ShowingBlackBackground">
@@ -172,13 +160,12 @@ class Project extends Component {
                                     <h3 className="my-3">Posted By</h3>
                                     <p> { this.state.ngoName } </p>
                                 </div>
-
-
                                 <div className="col-md-4 float-left">
                                     <h3 className="my-3">Region</h3>
                                     <p> { this.state.region } </p>
                                 </div>
                             </div>
+
                             <div className="col-md-4">
                                 <h3 className="my-3">Description</h3>
                                 <p> { this.state.description } </p>
@@ -190,8 +177,6 @@ class Project extends Component {
                                 <p> { this.state.beneficiaries } </p>
                             </div>
 
-
-
                             <div id="recommendedVOrC">
                                 <h1>Recommended Volunteers</h1>
                                 <hr/>
@@ -201,7 +186,6 @@ class Project extends Component {
                                     <tr className='table-secondary'>
                                         <th id='volunteerImage'>Image</th>
                                         <th id='volunteerName'>Name</th>
-                                        <th id='volunteerType'>Type</th>
                                         <th id='volunteerEmail'>Email</th>
                                         <th id='volunteerRegion'>Region</th>
                                     </tr>
@@ -212,10 +196,6 @@ class Project extends Component {
 
                                 </table>
                             </div>
-
-                            {/*showing dumy volunteers*/}
-
-
                         </div>
                     </div>
 
