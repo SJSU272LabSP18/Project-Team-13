@@ -174,7 +174,7 @@ class Project extends Component {
             } else {
                 currentHiredUsersToShow = this.state.currentHiredVolunteers.map( u => {
                     return (
-                        <tr key={u.name}>
+                        <tr key={u.name} onClick={() => window.location.href = '/profile/' + u.id}>
                             <td>
                                 <div>
                                     <img id="volunteer_user_image" src={ u.image } alt='user image'/>
@@ -199,7 +199,6 @@ class Project extends Component {
                     );
                 });
             }
-
 
             //recommendedUsers
             if(this.state.recommendedUsers === []) {
