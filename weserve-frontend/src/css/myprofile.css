@@ -1,0 +1,15 @@
+#ShowingBlackBackground {
+    background-color: black;
+    width: auto;
+    height: 60px;
+}
+
+img {
+    border: 1px solid;
+    width: 200px;
+    height: 200px;
+}
+
+textArea {
+    height: 100px;
+}
