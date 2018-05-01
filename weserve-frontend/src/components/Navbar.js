@@ -11,7 +11,8 @@ class Navbar extends Component {
         super();
         this.state = {
             isLoggedIn: false,
-            username: ''
+            username: '',
+            usertype: ''
         }
         this.handleLogout = this.handleLogout.bind(this);
     }
@@ -23,7 +24,8 @@ class Navbar extends Component {
                 if(response.data.sessionUsername !== "ERROR") {
                     this.setState({
                         isLoggedIn: true,
-                        username: response.data.sessionUsername
+                        username: response.data.sessionUsername,
+                        usertype: response.data.usertype
                     }, () => {
                         console.log(this.state.username);
                     })
@@ -40,7 +42,8 @@ class Navbar extends Component {
                 }
                 this.setState({
                     isLoggedIn: false,
-                    username: ''
+                    username: '',
+                    usertype: ''
                 })
             })
     }
@@ -49,7 +52,7 @@ class Navbar extends Component {
     render() {
 
         let changes = null;
-        if(this.state.isLoggedIn === false) {
+        if(this.state.isLoggedIn === false) {   // not logged in view
             changes = (
                 <ul className="navbar-nav ml-auto">
                     <li className="nav-item">
@@ -60,7 +63,7 @@ class Navbar extends Component {
                     </li>
                 </ul>
             );
-        } else {
+        } else if (this.state.isLoggedIn === true && this.state.usertype === 'ngo') {   // ngo view
             changes = (
                 <ul className="navbar-nav ml-auto">
                     <li className="nav-item">
@@ -68,6 +71,17 @@ class Navbar extends Component {
                     </li>
                     <li className="nav-item">
                         <a className="nav-link" href="/postproject">Post Project</a>
+                    </li>
+                    <li className="nav-item">
+                        <a className="nav-link" onClick={ this.handleLogout } href="/logout">Logout</a>
+                    </li>
+                </ul>
+            );
+        } else {    // volunteer view
+            changes = (
+                <ul className="navbar-nav ml-auto">
+                    <li className="nav-item">
+                        <a className="nav-link" href="/profile">MyProfile</a>
                     </li>
                     <li className="nav-item">
                         <a className="nav-link" onClick={ this.handleLogout } href="/logout">Logout</a>
