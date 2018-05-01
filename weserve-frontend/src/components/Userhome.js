@@ -18,7 +18,7 @@ class Userhome extends Component {
             recommendedProjectIDs: [],
             recommendedProjects: [],
             username: '',
-            userID: 0,
+            userID: 0
         };
 
         this.getAllPostedProjects = this.getAllPostedProjects.bind(this);
@@ -126,7 +126,7 @@ class Userhome extends Component {
                             <CardImg top width="300px" height="300px" src= { p.imageUrl } alt="Card image cap" />
                             <CardBody id="cardBody">
                                 <CardTitle id="cardTitle"><Link to={`/project/${ p.id }`}> { firstWordsForProject } </Link></CardTitle>
-                                <CardSubtitle id="cardSubtitle"> <Link to={`/user/${ p.ngoUserId }`}> { firstWordsForNGO }</Link> </CardSubtitle>
+                                <CardSubtitle id="cardSubtitle"> <Link to={`/profile/${ p.ngoUserId }`}> { firstWordsForNGO }</Link> </CardSubtitle>
                             </CardBody>
                         </Card>
                     </div>
@@ -149,7 +149,7 @@ class Userhome extends Component {
                             <CardImg top width="300px" height="300px" src= { p.imageUrl } alt="Card image cap" />
                             <CardBody id="cardBody">
                                 <CardTitle id="cardTitle"><Link to={`/project/${ p.id }`}> { firstWordsForProject } </Link></CardTitle>
-                                <CardSubtitle id="cardSubtitle"> <Link to={`/user/${ p.ngoUserId }`}> { firstWordsForNGO }</Link> </CardSubtitle>
+                                <CardSubtitle id="cardSubtitle"> <Link to={`/profile/${ p.ngoUserId }`}> { firstWordsForNGO }</Link> </CardSubtitle>
                             </CardBody>
                         </Card>
                     </div>
