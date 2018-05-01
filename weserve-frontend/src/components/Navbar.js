@@ -70,10 +70,10 @@ class Navbar extends Component {
                         <a className="nav-link" href="/myprofile">MyProfile</a>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link" href="/postproject">Post Project</a>
+                        <a className="nav-link" href="/dashboard">Dashboard</a>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link" href="/dashboard">Dashboard</a>
+                        <a className="nav-link" href="/postproject">Post Project</a>
                     </li>
                     <li className="nav-item">
                         <a className="nav-link" onClick={ this.handleLogout } href="/logout">Logout</a>
@@ -85,6 +85,9 @@ class Navbar extends Component {
                 <ul className="navbar-nav ml-auto">
                     <li className="nav-item">
                         <a className="nav-link" href="/myprofile">MyProfile</a>
+                    </li>
+                    <li className="nav-item">
+                        <a className="nav-link" href="/dashboard">Dashboard</a>
                     </li>
                     <li className="nav-item">
                         <a className="nav-link" onClick={ this.handleLogout } href="/logout">Logout</a>

@@ -307,7 +307,6 @@ router.post('/getAllVolunteersForProject', (req, res) => {
     })
 });
 
-<<<<<<< HEAD
 router.get('/getNGOPostedProjects/:ngoid', (req, res) => {
     console.log("Printing in getNGOPostedProjects", req.params);
     var ngoid = req.params.ngoid;
@@ -384,7 +383,7 @@ router.get('/getCurrentWorkingProjects/:userid', (req, res) => {
         }
     })
 });
-=======
+
 router.post('/profile', (req, res, next) =>{
     console.log(req.body);
 var body = req.body;
@@ -513,7 +512,7 @@ if(err) {
 })
 
 
->>>>>>> ee6084a726dcba88b1cce9f20272d9be9078ef48
+
 
 
 module.exports = router;
