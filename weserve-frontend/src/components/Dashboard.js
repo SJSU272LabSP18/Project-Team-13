@@ -94,7 +94,6 @@ class Dashboard extends Component {
             })
     }
 
-
     render() {
 
         let changes = null;
@@ -106,7 +105,7 @@ class Dashboard extends Component {
             } else {
                 projectsToShow = this.state.projects.map( p => {
                     return (
-                        <tr key={p.id}>
+                        <tr key={p.id} onClick={() => window.location.href = '/project/' + p.id}>
                             <td>
                                 <div>
                                     <img id="project_image" src={ p.imageUrl } alt='project image'/>

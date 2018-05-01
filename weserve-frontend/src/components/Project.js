@@ -199,8 +199,6 @@ class Project extends Component {
             });
         }
 
-
-
         //recommendedUsers
         if(this.state.recommendedUsers === []) {
             recommendedUsersToShow = [];

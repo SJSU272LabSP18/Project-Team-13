@@ -18,7 +18,8 @@ class Userhome extends Component {
             recommendedProjectIDs: [],
             recommendedProjects: [],
             username: '',
-            userID: 0
+            userID: 0,
+            isLoggedIn: false
         };
 
         this.getAllPostedProjects = this.getAllPostedProjects.bind(this);
@@ -31,6 +32,7 @@ class Userhome extends Component {
         this.checkSession();
         this.getAllPostedProjects();
         
+        
     }
 
     checkSession() {
@@ -40,7 +42,8 @@ class Userhome extends Component {
                 if(response.data.sessionUsername !== "ERROR") {
                     this.setState({
                         username: response.data.sessionUsername,
-                        userID: response.data.sessionUserID
+                        userID: response.data.sessionUserID,
+                        isLoggedIn: true
                     }, () => {
                         console.log("AFter checking session on userhome",this.state.userID);
                         this.getRecommendations();
@@ -157,17 +160,25 @@ class Userhome extends Component {
             })
         }
 
+        let changes = null;
+        if(this.state.isLoggedIn === true) {
+            changes = (
+                <div id="recommendedProjects">
+                    <h1>Recommended Projects</h1>
+                    <hr />
+                    { showRecommendedProjects }
+                </div>
+            );
+                
+        }
+
         return(
             <div className="Userhome">
                 <div id="ShowingBlackBackground">
                     <Navbar />
                 </div>
 
-                <div id="recommendedProjects">
-                    <h1>Recommended Projects</h1>
-                    <hr />
-                    { showRecommendedProjects }
-                </div>
+                { changes }
 
                 <div id="recommendedProjects">
                     <h1>All Projects</h1>
