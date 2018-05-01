@@ -298,5 +298,82 @@ router.post('/getAllVolunteersForProject', (req, res) => {
     })
 });
 
+router.get('/getNGOPostedProjects/:ngoid', (req, res) => {
+    console.log("Printing in getNGOPostedProjects", req.params);
+    var ngoid = req.params.ngoid;
+    pool.getConnection((err, con) => {
+        if(err) {
+            console.log("Error connecting to mysql in getNGOPostedProjects");
+            res.json({
+                message: "Error connecting to mysql in getNGOPostedProjects"
+            })
+        } else {
+            var sql = "select * from projectsNew where ngoUserId = ?";
+            con.query(sql, ngoid, (err, result) => {
+                if(err) {
+                    console.log("Error in querying the db for getNGOPostedProjects", err);
+                    res.json({message: "Error in querying the db for getting projects for NGOs"});
+                } else {
+                    if(result.length > 0) {
+                        console.log("Got all posted projects successfully");
+                        res.json({
+                            message: "Got all posted projects successfully",
+                            result: result
+                        })
+                    } else {
+                        console.log("No projects posted yet");
+                        res.json({
+                            message: "No projects posted yet",
+                            result: []
+                        })
+                    }
+
+                }
+            })
+        }
+    })
+});
+
+
+router.get('/getCurrentWorkingProjects/:userid', (req, res) => {
+    console.log("Printing in getCurrentWorkingProjects", req.params);
+    var userid = req.params.userid;
+    pool.getConnection((err, con) => {
+        if(err) {
+            console.log("Error connecting to mysql in getCurrentWorkingProjects");
+            res.json({
+                message: "Error connecting to mysql in getCurrentWorkingProjects"
+            })
+        } else {
+            var sql = "select * from projectsNew as pn inner join" +
+                " (select hup.projectid as hupprojectid from Hired_Users_Projects as hup inner join" +
+                " Users as u on u.userID = hup.userid where hup.userid = ?) as t" +
+                " on pn.id = t.hupprojectid";
+
+            con.query(sql, userid, (err, result) => {
+                if(err) {
+                    console.log("Error in querying the db for getCurrentWorkingProjects", err);
+                    res.json({message: "Error in querying the db for getting current working projects for users"});
+                } else {
+                    if(result.length > 0) {
+                        console.log("Got all current working projects successfully");
+                        res.json({
+                            message: "Got all current working projects successfully",
+                            result: result
+                        })
+                    } else {
+                        console.log("No current working projects");
+                        res.json({
+                            message: "No current working projects",
+                            result: []
+                        })
+                    }
+
+                }
+            })
+        }
+    })
+});
+
 
 module.exports = router;
