@@ -5,6 +5,7 @@ import url from '../serverurl';
 import Footer from './Footer';
 import '../css/project.css';
 import swal from 'sweetalert';
+import { Link } from 'react-router-dom';
 
 class Project extends Component {
 
@@ -158,6 +159,7 @@ class Project extends Component {
     render() {
         let recommendedUsersToShow = null;
         let currentHiredUsersToShow = null;
+        let changes = null;
         let hireButton = null;
         var buttonStyle = {
             display: "none"
@@ -165,75 +167,128 @@ class Project extends Component {
 
         if(this.state.ngoId === this.state.loggedInUserID) {
             buttonStyle.display = "block"
+
+            //hiredCurrentUsers
+            if(this.state.currentHiredVolunteers === []) {
+                currentHiredUsersToShow = [];
+            } else {
+                currentHiredUsersToShow = this.state.currentHiredVolunteers.map( u => {
+                    return (
+                        <tr key={u.name}>
+                            <td>
+                                <div>
+                                    <img id="volunteer_user_image" src={ u.image } alt='user image'/>
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <p> { u.firstName } {u.lastName} </p>
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <p> { u.email } </p>
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <p> { u.region } </p>
+                                </div>
+                            </td>
+                        </tr>
+                    );
+                });
+            }
+
+
+            //recommendedUsers
+            if(this.state.recommendedUsers === []) {
+                recommendedUsersToShow = [];
+            } else {
+                recommendedUsersToShow = this.state.recommendedUsers.map( u => {
+
+                    return (
+                        <tr key={u.name}>
+                            <td>
+                                <div>
+                                    <img id="volunteer_user_image" src={ u.image } alt='user image'/>
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <p> { u.firstName } {u.lastName} </p>
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <p> { u.email } </p>
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <p> { u.region } </p>
+                                    <div>
+                                        <button id={ u.userID } style={ buttonStyle } onClick={ this.handleHireButtonClick } className="btn-primary">Hire</button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    );
+                });
+            }
+
+
+            changes = (
+                <div id="changes">
+
+                    <div id="currentHiredVorC">
+                        <h1>Hired Volunteers</h1>
+                        <hr/>
+                        <div>
+                            { this.state.message }
+                        </div>
+                        <br/>
+                        <table className='table table-hover'>
+                            <thead>
+                            <tr className='table-secondary'>
+                                <th id='volunteerImage'>Image</th>
+                                <th id='volunteerName'>Name</th>
+                                <th id='volunteerEmail'>Email</th>
+                                <th id='volunteerRegion'>Region</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            { currentHiredUsersToShow }
+                            </tbody>
+
+                        </table>
+                    </div>
+
+                    <div id="recommendedVOrC">
+                        <h1>Recommended Volunteers</h1>
+                        <hr/>
+
+                        <table className='table table-hover'>
+                            <thead>
+                            <tr className='table-secondary'>
+                                <th id='volunteerImage'>Image</th>
+                                <th id='volunteerName'>Name</th>
+                                <th id='volunteerEmail'>Email</th>
+                                <th id='volunteerRegion'>Region</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            { recommendedUsersToShow }
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+
+            );
         }
 
-        //hiredCurrentUsers
-        if(this.state.currentHiredVolunteers === []) {
-            currentHiredUsersToShow = [];
-        } else {
-            currentHiredUsersToShow = this.state.currentHiredVolunteers.map( u => {
-                return (
-                    <tr key={u.name}>
-                        <td>
-                            <div>
-                                <img id="volunteer_user_image" src={ u.image } alt='user image'/>
-                            </div>
-                        </td>
-                        <td>
-                            <div>
-                                <p> { u.firstName } {u.lastName} </p>
-                            </div>
-                        </td>
-                        <td>
-                            <div>
-                                <p> { u.email } </p>
-                            </div>
-                        </td>
-                        <td>
-                            <div>
-                                <p> { u.region } </p>
-                            </div>
-                        </td>
-                    </tr>
-                );
-            });
-        }
 
-        //recommendedUsers
-        if(this.state.recommendedUsers === []) {
-            recommendedUsersToShow = [];
-        } else {
-            recommendedUsersToShow = this.state.recommendedUsers.map( u => {
-
-               return (
-                   <tr key={u.name}>
-                       <td>
-                           <div>
-                               <img id="volunteer_user_image" src={ u.image } alt='user image'/>
-                           </div>
-                       </td>
-                       <td>
-                           <div>
-                               <p> { u.firstName } {u.lastName} </p>
-                           </div>
-                       </td>
-                       <td>
-                           <div>
-                               <p> { u.email } </p>
-                           </div>
-                       </td>
-                       <td>
-                           <div>
-                               <p> { u.region } </p>
-                               <div>
-                                   <button id={ u.userID } style={ buttonStyle } onClick={ this.handleHireButtonClick } className="btn-primary">Hire</button>
-                               </div>
-                           </div>
-                       </td>
-                   </tr>
-               );
-            });
-        }
 
         return(
             <div className="Project">
@@ -270,48 +325,9 @@ class Project extends Component {
                                 <p> { this.state.beneficiaries } </p>
                             </div>
 
-                            <div id="currentHiredVorC">
-                                <h1>Hired Volunteers</h1>
-                                <hr/>
-                                <div>
-                                    { this.state.message }
-                                </div>
-                                <br/>
-                                <table className='table table-hover'>
-                                    <thead>
-                                    <tr className='table-secondary'>
-                                        <th id='volunteerImage'>Image</th>
-                                        <th id='volunteerName'>Name</th>
-                                        <th id='volunteerEmail'>Email</th>
-                                        <th id='volunteerRegion'>Region</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    { currentHiredUsersToShow }
-                                    </tbody>
+                            { changes }
 
-                                </table>
-                            </div>
 
-                            <div id="recommendedVOrC">
-                                <h1>Recommended Volunteers</h1>
-                                <hr/>
-
-                                <table className='table table-hover'>
-                                    <thead>
-                                    <tr className='table-secondary'>
-                                        <th id='volunteerImage'>Image</th>
-                                        <th id='volunteerName'>Name</th>
-                                        <th id='volunteerEmail'>Email</th>
-                                        <th id='volunteerRegion'>Region</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                        { recommendedUsersToShow }
-                                    </tbody>
-
-                                </table>
-                            </div>
                         </div>
                     </div>
 
