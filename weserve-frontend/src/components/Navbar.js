@@ -81,7 +81,7 @@ class Navbar extends Component {
             changes = (
                 <ul className="navbar-nav ml-auto">
                     <li className="nav-item">
-                        <a className="nav-link" href="/profile">MyProfile</a>
+                        <a className="nav-link" href="/myprofile">MyProfile</a>
                     </li>
                     <li className="nav-item">
                         <a className="nav-link" onClick={ this.handleLogout } href="/logout">Logout</a>
