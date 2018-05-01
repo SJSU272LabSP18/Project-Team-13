@@ -147,7 +147,7 @@ class MyProfile extends Component {
             <div class="row">
             <div class="col-md-3">
             <div class="text-center">
-            <img src={this.state.image} class="img-rounded img-responsive" alt="" />
+            <img src={this.state.image} id="imgProfile"class="img-rounded img-responsive" alt="" />
             <h5></h5>
             </div>
             </div>
