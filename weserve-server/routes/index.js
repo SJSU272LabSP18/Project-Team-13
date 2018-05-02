@@ -235,8 +235,8 @@ router.post('/saveVolunteerForProject', (req, res) => {
             })
         } else {
 
-            var sql1 = "select * from Hired_Users_Projects where userid = ?";
-            con.query(sql1, userid, (err, result) => {
+            var sql1 = "select * from Hired_Users_Projects where userid = ? and projectid = ?";
+            con.query(sql1, [userid, projectid], (err, result) => {
                 if(err) {
                     console.log("Error in querying the db for inserting volunteer for the projects", err);
                     res.json({message: "Error in querying the db for inserting volunteer for the projects"});
