@@ -5,7 +5,7 @@ var multer = require('multer');
 
 
 var pool  = mysql.createPool({
-    connectionLimit : 10,
+    connectionLimit : 30,
     host     : 'weserveinstance.ccecdywbwqqr.us-west-1.rds.amazonaws.com',
     port     : 3305,
     user     : 'root',
@@ -244,6 +244,7 @@ router.post('/saveVolunteerForProject', (req, res) => {
                     if(result.length == 0) {
                         var sql = "insert into Hired_Users_Projects (userid, projectid) values (?, ?)";
                         con.query(sql, [userid, projectid], (err, result1) => {
+                            con.release();
                             if(err) {
                                 console.log("Error in querying the db for inserting volunteer for the projects", err);
                                 res.json({message: "Error in querying the db for inserting volunteer for the projects"});
@@ -283,6 +284,7 @@ router.post('/getAllVolunteersForProject', (req, res) => {
         } else {
             var sql = "select * from Users as u inner join Hired_Users_Projects as hup on u.userID = hup.userid where hup.projectid = ?";
             con.query(sql, [projectid], (err, result) => {
+                con.release();
                 if(err) {
                     console.log("Error in querying the db for getAllVolunteersForProject", err);
                     res.json({message: "Error in querying the db for getting volunteer for the projects"});
@@ -319,6 +321,7 @@ router.get('/getNGOPostedProjects/:ngoid', (req, res) => {
         } else {
             var sql = "select * from projectsNew where ngoUserId = ?";
             con.query(sql, ngoid, (err, result) => {
+                con.release();
                 if(err) {
                     console.log("Error in querying the db for getNGOPostedProjects", err);
                     res.json({message: "Error in querying the db for getting projects for NGOs"});
@@ -360,6 +363,7 @@ router.get('/getCurrentWorkingProjects/:userid', (req, res) => {
                 " on pn.id = t.hupprojectid";
 
             con.query(sql, userid, (err, result) => {
+                con.release();
                 if(err) {
                     console.log("Error in querying the db for getCurrentWorkingProjects", err);
                     res.json({message: "Error in querying the db for getting current working projects for users"});
