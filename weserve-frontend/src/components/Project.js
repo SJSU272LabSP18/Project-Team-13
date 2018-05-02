@@ -28,12 +28,14 @@ class Project extends Component {
             loggedInUserType: '',
             loggedInUsername: '',
             loggedInUserID: '',
-            message: '',
+            messageHired: '',
+            messageInterested: '',
             currentHiredVolunteers: [],
             pageOfItems1: [],
             pageOfItems2: [],
             pageOfItems3: [],
-            interestedVolunteers: []
+            interestedVolunteers: [],
+            messageRecommended: ''
         }
         this.getProject = this.getProject.bind(this);
         this.getRecommendedUsers = this.getRecommendedUsers.bind(this);
@@ -64,11 +66,11 @@ class Project extends Component {
                 if(response.data.message === "Got all interested volunteers successfully") {
                     this.setState({
                         interestedVolunteers: response.data.result,
-                        message: ''
+                        messageInterested: ''
                     })
                 } else if(response.data.message === "No interested volunteers yet") {
                     this.setState({
-                        message: "No volunteers interested yet"
+                        messageInterested: "No volunteers interested yet"
                     })
                 }
             })
@@ -101,11 +103,11 @@ class Project extends Component {
                 if(response.data.message === "Got all hired volunteers successfully") {
                     this.setState({
                         currentHiredVolunteers: response.data.result,
-                        message: ''
+                        messageHired: ''
                     })
                 } else if(response.data.message === "No hired volunteers yet") {
                     this.setState({
-                        message: "No volunteers hired yet"
+                        messageHired: "No volunteers hired yet"
                     })
                 }
             })
@@ -176,8 +178,14 @@ class Project extends Component {
             axios.post(url + '/getmultipleusers', data ,{ withCredentials: true })
                 .then((response) => {
                     console.log(response.data);
+                    if(response.data.result.length == 0) {
+                        this.setState({
+                            messageRecommended: 'No Recommended Users'
+                        })
+                    }
                     this.setState({
-                        recommendedUsers: response.data.result
+                        recommendedUsers: response.data.result,
+                        messageRecommended: ''
                     })
                 })
         }.bind(this));
@@ -372,7 +380,7 @@ class Project extends Component {
                             </thead>
                             <tbody>
                             <div>
-                                { this.state.message }
+                                { this.state.messageHired }
                             </div>
                             <br/>
                             { currentHiredUsersToShow }
@@ -399,7 +407,7 @@ class Project extends Component {
                             </thead>
                             <tbody>
                             <div>
-                                { this.state.message }
+                                { this.state.messageRecommended }
                             </div>
                             <br/>
                             { recommendedUsersToShow }
@@ -424,7 +432,7 @@ class Project extends Component {
                             </thead>
                             <tbody>
                             <div>
-                                { this.state.message }
+                                { this.state.messageInterested }
                             </div>
                             <br/>
                             { interestedUsersToShow }
