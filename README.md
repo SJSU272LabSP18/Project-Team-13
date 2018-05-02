@@ -1,5 +1,5 @@
 # Project-Team-13
-## Team Members: Venkatesh Devale, Tholkappian Chidambaram, Matthew Zu, Sasank Matavalam
+## Team Members: Venkatesh Devale, Tholkappian Chidambaram, Matthew Zhu, Sasank Matavalam
 ## Project Ideas
 
 

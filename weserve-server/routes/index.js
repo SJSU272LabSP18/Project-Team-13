@@ -1,10 +1,11 @@
 var express = require('express');
 var router = express.Router();
 var mysql = require('mysql');
+var multer = require('multer');
 
 
 var pool  = mysql.createPool({
-    connectionLimit : 10,
+    connectionLimit : 30,
     host     : 'weserveinstance.ccecdywbwqqr.us-west-1.rds.amazonaws.com',
     port     : 3305,
     user     : 'root',
@@ -12,6 +13,16 @@ var pool  = mysql.createPool({
     database : 'weserve'
 });
 
+const storage = multer.diskStorage({
+    destination: function (req, file, cb){
+        cb(null, './images/');
+    },
+    filename: function(req, file, cb ){
+        cb(null, req.body.userid + '.jpg');
+    }
+});
+
+const upload = multer({storage});
 
 
 /* GET home page. */
@@ -22,8 +33,6 @@ router.get('/', function(req, res, next) {
 router.post('/signup', (req, res, next) => {
 
     console.log(req.body);
-
-
     pool.getConnection((err, connection) => {
         if(err) {
             console.log("Error Connecting to Database");
@@ -76,6 +85,7 @@ router.post('/login', (req, res, next) => {
                    console.log("User found...", result);
                    req.session.username = result[0].username;
                    req.session.userID = result[0].userID;
+                   req.session.usertype = result[0].userType;
                    console.log("Session Started...", req.session.username );
                    res.json({
                        message: "success",
@@ -99,7 +109,8 @@ router.get('/checksession', (req, res) => {
     if(req.session.username) {
         res.json({
             sessionUsername: req.session.username, 
-            sessionUserID: req.session.userID
+            sessionUserID: req.session.userID,
+            usertype: req.session.usertype
         });
     }
 
@@ -148,7 +159,7 @@ router.post('/getspecificproject', (req, res) => {
                 res.json({message: "Error in querying the db for getting projects"});
             } else {
                 if(result.length > 0) {
-                    console.log("After getting all projects...", result);
+                    console.log("After getting specific projects...", result);
                     res.json({
                         message: 'success',
                         result: result
@@ -170,11 +181,11 @@ router.post('/getmultipleprojects', (req, res) => {
             con.release();
 
             if(err) {
-                console.log("Error in querying the db for getting projects");
-                res.json({message: "Error in querying the db for getting projects"});
+                console.log("Error in querying the db for getting multiple projects");
+                res.json({message: "Error in querying the db for getting multiple projects"});
             } else {
                 if(result.length > 0) {
-                    console.log("After getting all projects...", result);
+                    console.log("After getting multiple projects...", result);
                     res.json({
                         message: 'success',
                         result: result
@@ -184,5 +195,328 @@ router.post('/getmultipleprojects', (req, res) => {
         })
     })
 });
+
+router.post('/getmultipleusers', (req, res) => {
+    console.log("In get multiple users...");
+    console.log(req.body)
+
+    pool.getConnection((err, con) => {
+        var sql = 'select * from Users where userID in (' + req.body.userIDs + ')';
+        console.log(sql)
+        con.query(sql, null, (err, result) => {
+            con.release();
+
+            if(err) {
+                console.log("Error in querying the db for getting users");
+                res.json({message: "Error in querying the db for getting users"});
+            } else {
+                if(result.length > 0) {
+                    console.log("After getting multiple users...", result);
+                    res.json({
+                        message: 'success',
+                        result: result
+                    })
+                }
+            }
+        })
+    })
+});
+
+
+router.post('/saveVolunteerForProject', (req, res) => {
+    console.log("In saveVolunteerForProject", req.body);
+    var userid = req.body.userid;
+    var projectid = req.body.projectid;
+    pool.getConnection((err, con) => {
+        if(err) {
+            console.log("Error connecting to mysql in saveVolunteerForProject");
+            res.json({
+                message: "Error connecting to mysql in saveVolunteerForProject"
+            })
+        } else {
+
+            var sql1 = "select * from Hired_Users_Projects where userid = ?";
+            con.query(sql1, userid, (err, result) => {
+                if(err) {
+                    console.log("Error in querying the db for inserting volunteer for the projects", err);
+                    res.json({message: "Error in querying the db for inserting volunteer for the projects"});
+                } else {
+                    if(result.length == 0) {
+                        var sql = "insert into Hired_Users_Projects (userid, projectid) values (?, ?)";
+                        con.query(sql, [userid, projectid], (err, result1) => {
+                            con.release();
+                            if(err) {
+                                console.log("Error in querying the db for inserting volunteer for the projects", err);
+                                res.json({message: "Error in querying the db for inserting volunteer for the projects"});
+                            } else {
+                                console.log("Volunteer inserted successfully", result1);
+                                res.json({
+                                    message: "Volunteer Hired"
+                                })
+                            }
+                        })
+                    } else {
+                        if(result.length > 0) {
+                            console.log("The same user is already hired");
+                            res.json({
+                                message: "This volunteer is already hired, check current volunteers above"
+                            })
+                        }
+                    }
+                }
+            })
+
+
+        }
+    })
+});
+
+
+router.post('/getAllVolunteersForProject', (req, res) => {
+    console.log("In getAllVolunteersForProject", req.body);
+    var projectid = req.body.projectid;
+    pool.getConnection((err, con) => {
+        if(err) {
+            console.log("Error connecting to mysql in getAllVolunteersForProject");
+            res.json({
+                message: "Error connecting to mysql in getAllVolunteersForProject"
+            })
+        } else {
+            var sql = "select * from Users as u inner join Hired_Users_Projects as hup on u.userID = hup.userid where hup.projectid = ?";
+            con.query(sql, [projectid], (err, result) => {
+                con.release();
+                if(err) {
+                    console.log("Error in querying the db for getAllVolunteersForProject", err);
+                    res.json({message: "Error in querying the db for getting volunteer for the projects"});
+                } else {
+                    if(result.length > 0) {
+                        console.log("Got all hired volunteers successfully");
+                        res.json({
+                            message: "Got all hired volunteers successfully",
+                            result: result
+                        })
+                    } else {
+                        console.log("No hired volunteers yet");
+                        res.json({
+                            message: "No hired volunteers yet",
+                            result: []
+                        })
+                    }
+
+                }
+            })
+        }
+    })
+});
+
+router.get('/getNGOPostedProjects/:ngoid', (req, res) => {
+    console.log("Printing in getNGOPostedProjects", req.params);
+    var ngoid = req.params.ngoid;
+    pool.getConnection((err, con) => {
+        if(err) {
+            console.log("Error connecting to mysql in getNGOPostedProjects");
+            res.json({
+                message: "Error connecting to mysql in getNGOPostedProjects"
+            })
+        } else {
+            var sql = "select * from projectsNew where ngoUserId = ?";
+            con.query(sql, ngoid, (err, result) => {
+                con.release();
+                if(err) {
+                    console.log("Error in querying the db for getNGOPostedProjects", err);
+                    res.json({message: "Error in querying the db for getting projects for NGOs"});
+                } else {
+                    if(result.length > 0) {
+                        console.log("Got all posted projects successfully");
+                        res.json({
+                            message: "Got all posted projects successfully",
+                            result: result
+                        })
+                    } else {
+                        console.log("No projects posted yet");
+                        res.json({
+                            message: "No projects posted yet",
+                            result: []
+                        })
+                    }
+
+                }
+            })
+        }
+    })
+});
+
+
+router.get('/getCurrentWorkingProjects/:userid', (req, res) => {
+    console.log("Printing in getCurrentWorkingProjects", req.params);
+    var userid = req.params.userid;
+    pool.getConnection((err, con) => {
+        if(err) {
+            console.log("Error connecting to mysql in getCurrentWorkingProjects");
+            res.json({
+                message: "Error connecting to mysql in getCurrentWorkingProjects"
+            })
+        } else {
+            var sql = "select * from projectsNew as pn inner join" +
+                " (select hup.projectid as hupprojectid from Hired_Users_Projects as hup inner join" +
+                " Users as u on u.userID = hup.userid where hup.userid = ?) as t" +
+                " on pn.id = t.hupprojectid";
+
+            con.query(sql, userid, (err, result) => {
+                con.release();
+                if(err) {
+                    console.log("Error in querying the db for getCurrentWorkingProjects", err);
+                    res.json({message: "Error in querying the db for getting current working projects for users"});
+                } else {
+                    if(result.length > 0) {
+                        console.log("Got all current working projects successfully");
+                        res.json({
+                            message: "Got all current working projects successfully",
+                            result: result
+                        })
+                    } else {
+                        console.log("No current working projects");
+                        res.json({
+                            message: "No current working projects",
+                            result: []
+                        })
+                    }
+
+                }
+            })
+        }
+    })
+});
+
+router.post('/profile', (req, res, next) =>{
+    console.log(req.body);
+var body = req.body;
+let dobj = [];
+if(body.firstname) dobj.push("firstname = " + mysql.escape(body.firstname));
+if(body.lastname) dobj.push("lastname = " + mysql.escape(body.lastname));
+if(body.email) dobj.push("email = " + mysql.escape(body.email));
+if(body.image) dobj.push("image = " + mysql.escape(body.image));
+if(body.description) dobj.push("description = " + mysql.escape(body.description));
+if(body.region) dobj.push("region = " + mysql.escape(body.region));
+console.log(JSON.stringify(dobj));
+var updateStr = "";
+for(var i=0; i<dobj.length-1; i++){
+    updateStr = updateStr + dobj[i] + ",";
+}
+updateStr += dobj[dobj.length-1];
+
+pool.getConnection((err, connection) => {
+    if(err){
+        console.log("Error connecting to database");
+        res.json({"message": "Error connecting to database"});
+    }else{
+        console.log('connected to MYSQL');
+var query = "update Users set " + updateStr + "where username = " + mysql.escape(req.session.username) + ";";
+connection.query(query, (err, results) =>{
+    connection.release();
+if(err){
+    console.log(query,"error in updating user info");
+    res.json({"message": "Error updating user in database"});
+} else {
+    console.log("In updating users", results);
+    res.json({"message":"success"})
+}
+})
+}
+})
+});
+
+router.post('/upload',  upload.single('file'), (req,res, next) =>{
+    console.log("profile image uploaded");
+});
+
+router.post('/get_user_info', (req, res, next) => {
+    console.log(' request to get user profile ', req.body.userid);
+pool.getConnection((err, conn) => {
+    if(err) {
+        console.log("Error connecting to database");
+        res.json({"message": "Error connecting to database"});
+    }else{
+        console.log('connected to MYSQL');
+var sql = "select * from Users where userID = " + mysql.escape(req.body.userid) + ";";
+console.log(sql);
+conn.query(sql, (err, results) => {
+    conn.release();
+if (err) {
+    console.log("Error in querying the db for getting user");
+    res.json({message: "Error in querying the db for getting user"});
+} else {
+    if (results.length > 0) {
+        console.log("after getting user info", results);
+        res.json({
+            message: 'success',
+            result: results
+        })
+    }
+}
+})
+}
+})
+})
+
+router.post('/get_logged_user_info', (req, res, next) => {
+    console.log(' request to get user profile ', req.body.userid);
+pool.getConnection((err, conn) => {
+    if(err) {
+        console.log("Error connecting to database");
+        res.json({"message": "Error connecting to database"});
+    }else{
+        console.log('connected to MYSQL');
+var sql = "select * from Users where username = " + mysql.escape(req.body.userid) + ";";
+console.log(sql);
+conn.query(sql, (err, results) => {
+    conn.release();
+if (err) {
+    console.log("Error in querying the db for getting logged user");
+    res.json({message: "Error in querying the db for getting logged user"});
+} else {
+    if (results.length > 0) {
+        console.log("after getting logged user info", results);
+        res.json({
+            message: 'success',
+            result: results
+        })
+    }
+}
+})
+}
+})
+})
+
+
+router.post('/postproject', (req, res, next) => {
+    console.log(req.body);
+var body = req.body;
+pool.getConnection((err, connection) => {
+    if(err){
+        console.log("Error Connecting to Database");
+        res.json({"message": "Error Connecting to Database"});
+    } else {
+        var query = "insert into projectsNew (ngoUserId, ngoName, region, imageUrl, name, scope, need, beneficiaries, funding, contact) values ("
+            +mysql.escape(body.ngoUserId) + ", " + mysql.escape(body.ngoName) + ", " + mysql.escape(body.region) + ", " + mysql.escape(body.image) + ", "
+            + mysql.escape(body.name) + ", " + mysql.escape(body.scope) + ", " + mysql.escape(body.need) + ", "
+            + mysql.escape(body.beneficiaries) + ", " + mysql.escape(body.funding) + ", " + mysql.escape(body.contact) + ")";
+connection.query(query, (err, results) => {
+    connection.release();
+if(err) {
+    console.log("Error in inserting project", err);
+    res.json({"message": "Error posting project in Database"});
+} else {
+    console.log("In inserting project ", results);
+    res.json({"message": "Project posted Successfully"});
+}
+})
+}
+})
+})
+
+
+
+
 
 module.exports = router;

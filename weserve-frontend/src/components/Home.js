@@ -61,14 +61,14 @@ class Home extends Component {
                     <div className="container my-auto">
                         <div className="row">
                             <div className="col-lg-10 mx-auto">
-                                <h1 className="text-uppercase">
-                                    <strong>Your Favorite Source of Free HandsOn Projects</strong>
+                                <h1>
+                                    <strong>WeServe</strong>
                                 </h1>
                                 <hr/>
                             </div>
                             <div className="col-lg-8 mx-auto">
-                                <p className="text-faded mb-5">WeServe helps you build better connections to Volunteers or Pro-Bono Consultants using the WeServe's smart Machine Learning framework! Just login start going, no strings attached!</p>
-                                <a className="btn btn-primary btn-xl js-scroll-trigger" href="#about">Find Out More</a>
+                                <p className="text-faded mb-5">WeServe helps builds connections between volunteers and NGOs using WeServe's smart Machine Learning framework! Just login start going, no strings attached!</p>
+                                <a className="btn btn-primary btn-xl js-scroll-trigger" href="#services">Find Out More</a>
                             </div>
                         </div>
                     </div>
@@ -121,7 +121,7 @@ class Home extends Component {
                     <div className="container-fluid p-0">
                         <div className="row no-gutters popup-gallery">
                             <div className="col-lg-4 col-sm-6">
-                                <a className="portfolio-box" href={ img1f }>
+                                <a className="portfolio-box">
                                     <img className="img-fluid" src={ img1t } alt=""/>
                                         <div className="portfolio-box-caption">
                                             <div className="portfolio-box-caption-content">
@@ -136,7 +136,7 @@ class Home extends Component {
                                 </a>
                             </div>
                             <div className="col-lg-4 col-sm-6">
-                                <a className="portfolio-box" href={ img2f }>
+                                <a className="portfolio-box">
                                     <img className="img-fluid" src={ img2t } alt=""/>
                                         <div className="portfolio-box-caption">
                                             <div className="portfolio-box-caption-content">
@@ -151,7 +151,7 @@ class Home extends Component {
                                 </a>
                             </div>
                             <div className="col-lg-4 col-sm-6">
-                                <a className="portfolio-box" href= { img3f }>
+                                <a className="portfolio-box">
                                     <img className="img-fluid" src={ img3t } alt=""/>
                                         <div className="portfolio-box-caption">
                                             <div className="portfolio-box-caption-content">
@@ -166,7 +166,7 @@ class Home extends Component {
                                 </a>
                             </div>
                             <div className="col-lg-4 col-sm-6">
-                                <a className="portfolio-box" href={ img4f }>
+                                <a className="portfolio-box">
                                     <img className="img-fluid" src={ img4t } alt="" />
                                         <div className="portfolio-box-caption">
                                             <div className="portfolio-box-caption-content">
@@ -181,7 +181,7 @@ class Home extends Component {
                                 </a>
                             </div>
                             <div className="col-lg-4 col-sm-6">
-                                <a className="portfolio-box" href={ img5f }>
+                                <a className="portfolio-box">
                                     <img className="img-fluid" src={ img5t } alt="" />
                                         <div className="portfolio-box-caption">
                                             <div className="portfolio-box-caption-content">
@@ -227,11 +227,12 @@ class Home extends Component {
                         <div className="row">
                             <div className="col-lg-4 ml-auto text-center">
                                 <i className="fa fa-phone fa-3x mb-3 sr-contact"></i>
-                                <p>123-456-6789</p>
+                                <p>Phone: 123-456-6789</p>
                             </div>
                             <div className="col-lg-4 mr-auto text-center">
                                 <i className="fa fa-envelope-o fa-3x mb-3 sr-contact"></i>
                                 <p>
+                                    <a>Email: </a>
                                     <a href="mailto:your-email@your-domain.com">feedback@weserveyou.com</a>
                                 </p>
                             </div>

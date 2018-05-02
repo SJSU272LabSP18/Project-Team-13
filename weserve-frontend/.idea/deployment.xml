@@ -5,7 +5,7 @@
       <paths name="awsweserve">
         <serverdata>
           <mappings>
-            <mapping deploy="/cmpe272/weserve/weserve-frontend" local="$PROJECT_DIR$" web="/" />
+            <mapping deploy="/weserve/weserve-frontend" local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>

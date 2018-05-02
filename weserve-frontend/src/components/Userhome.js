@@ -19,6 +19,7 @@ class Userhome extends Component {
             recommendedProjects: [],
             username: '',
             userID: 0,
+            isLoggedIn: false
         };
 
         this.getAllPostedProjects = this.getAllPostedProjects.bind(this);
@@ -31,6 +32,7 @@ class Userhome extends Component {
         this.checkSession();
         this.getAllPostedProjects();
         
+        
     }
 
     checkSession() {
@@ -40,7 +42,8 @@ class Userhome extends Component {
                 if(response.data.sessionUsername !== "ERROR") {
                     this.setState({
                         username: response.data.sessionUsername,
-                        userID: response.data.sessionUserID
+                        userID: response.data.sessionUserID,
+                        isLoggedIn: true
                     }, () => {
                         console.log("AFter checking session on userhome",this.state.userID);
                         this.getRecommendations();
@@ -126,7 +129,7 @@ class Userhome extends Component {
                             <CardImg top width="300px" height="300px" src= { p.imageUrl } alt="Card image cap" />
                             <CardBody id="cardBody">
                                 <CardTitle id="cardTitle"><Link to={`/project/${ p.id }`}> { firstWordsForProject } </Link></CardTitle>
-                                <CardSubtitle id="cardSubtitle"> <Link to={`/user/${ p.ngoUserId }`}> { firstWordsForNGO }</Link> </CardSubtitle>
+                                <CardSubtitle id="cardSubtitle"> <Link to={`/profile/${ p.ngoUserId }`}> { firstWordsForNGO }</Link> </CardSubtitle>
                             </CardBody>
                         </Card>
                     </div>
@@ -149,12 +152,24 @@ class Userhome extends Component {
                             <CardImg top width="300px" height="300px" src= { p.imageUrl } alt="Card image cap" />
                             <CardBody id="cardBody">
                                 <CardTitle id="cardTitle"><Link to={`/project/${ p.id }`}> { firstWordsForProject } </Link></CardTitle>
-                                <CardSubtitle id="cardSubtitle"> <Link to={`/user/${ p.ngoUserId }`}> { firstWordsForNGO }</Link> </CardSubtitle>
+                                <CardSubtitle id="cardSubtitle"> <Link to={`/profile/${ p.ngoUserId }`}> { firstWordsForNGO }</Link> </CardSubtitle>
                             </CardBody>
                         </Card>
                     </div>
                 );
             })
+        }
+
+        let changes = null;
+        if(this.state.isLoggedIn === true) {
+            changes = (
+                <div id="recommendedProjects">
+                    <h1>Recommended Projects</h1>
+                    <hr />
+                    { showRecommendedProjects }
+                </div>
+            );
+                
         }
 
         return(
@@ -163,11 +178,7 @@ class Userhome extends Component {
                     <Navbar />
                 </div>
 
-                <div id="recommendedProjects">
-                    <h1>Recommended Projects</h1>
-                    <hr />
-                    { showRecommendedProjects }
-                </div>
+                { changes }
 
                 <div id="recommendedProjects">
                     <h1>All Projects</h1>
