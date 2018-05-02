@@ -3,6 +3,7 @@ import Navbar from "./Navbar";
 import '../css/myprofile.css';
 import url from '../serverurl';
 import axios from 'axios';
+import swal from 'sweetalert';
 //import image from '../img/stevejobs.jpg';
 
 
@@ -107,11 +108,11 @@ class MyProfile extends Component {
             .then((response) => {
             console.log(response.data);
         if(response.data.message === 'success'){
-            alert('Updated successfully');
+            swal('Updated successfully', "", "success");
             this.props.history.push('/userhome');
         }
         else{
-            alert("error");
+            swal('Sorry, Please try again later', "We are facing some issues", "warning");
         }
     })
     }

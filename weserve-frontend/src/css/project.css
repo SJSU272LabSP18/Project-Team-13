@@ -26,6 +26,13 @@ img {
     height: auto;
 }
 
+#interestedVOrC {
+    margin-top: 50px;
+    /*margin-left: 10px;*/
+    width: 1300px;
+    height: auto;
+}
+
 #projectName {
     margin-left: -20px;
 }
@@ -45,3 +52,14 @@ hr {
 /*#h3Funding, #h3bene, #pfunding, #pbene {*/
     /*font-size: 12px;*/
 /*}*/
+
+
+#btnMarkInterested {
+    margin-top: 20px;
+    margin-left: 100px;
+}
+
+#uncontrolled-tab-example-tab-1, #uncontrolled-tab-example-tab-2, #uncontrolled-tab-example-tab-3 {
+    margin-left: 50px;
+    margin-right: 50px;
+}

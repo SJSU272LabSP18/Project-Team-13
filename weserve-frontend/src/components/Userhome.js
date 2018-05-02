@@ -5,7 +5,7 @@ import { Card, CardImg, CardText, CardBody,
 import axios from 'axios';
 import url from '../serverurl';
 import { Link } from 'react-router-dom';
-
+import PaginationForUserhome from './PaginationForUserhome';
 import '../css/userhome.css';
 
 class Userhome extends Component {
@@ -19,13 +19,15 @@ class Userhome extends Component {
             recommendedProjects: [],
             username: '',
             userID: 0,
-            isLoggedIn: false
+            isLoggedIn: false,
+            pageOfItems: []
         };
 
         this.getAllPostedProjects = this.getAllPostedProjects.bind(this);
         this.getFirstThreeWords = this.getFirstThreeWords.bind(this);
         this.getRecommendations = this.getRecommendations.bind(this);
         this.checkSession = this.checkSession.bind(this);
+        this.onChangePage = this.onChangePage.bind(this);
     }
 
     componentWillMount() {
@@ -33,6 +35,11 @@ class Userhome extends Component {
         this.getAllPostedProjects();
         
         
+    }
+
+    onChangePage(pageOfItems) {
+        // update state with new page of items
+        this.setState({ pageOfItems: pageOfItems});
     }
 
     checkSession() {
@@ -115,7 +122,7 @@ class Userhome extends Component {
         if(this.state.projects === []) {
             showAllProjects = [];
         } else {
-            showAllProjects = this.state.projects.map(p => {
+            showAllProjects = this.state.pageOfItems.map(p => {
 
 
                 var firstWordsForProject = this.getFirstThreeWords(p.name);
@@ -185,6 +192,8 @@ class Userhome extends Component {
                     <hr />
                     { showAllProjects }
                 </div>
+
+                <PaginationForUserhome items={this.state.projects} onChangePage={this.onChangePage} />
 
             </div>
         );

@@ -20,11 +20,38 @@ class PostProject extends React.Component{
             funding: "",
             contact:"",
             editing: false,
-            disabled: true
+            disabled: true,
+            loggedInUsername: '',
+            loggedInUserID: '',
+            loggedInUserType: ''
         }
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+
+    componentWillMount(){
+        this.checkSession();
+    }
+
+    checkSession() {
+        axios.get(url + "/checksession", {withCredentials: true})
+            .then((response) => {
+                console.log("In checksession on project details page",response.data);
+                if(response.data.sessionUsername !== "ERROR") {
+                    this.setState({
+                        loggedInUsername: response.data.sessionUsername,
+                        loggedInUserID: response.data.sessionUserID,
+                        loggedInUserType: response.data.usertype
+                    }, ()=> {
+                        console.log("after checking session on project details page:", this.state.loggedInUserID);
+                    })
+                } else {
+                    swal("Please login again");
+                    this.props.history.push('/login');
+                }
+            })
     }
 
     edit() {
@@ -51,7 +78,7 @@ class PostProject extends React.Component{
         e.preventDefault();
         console.log("inside post project");
         var projectDetails = {
-            ngoUserId: uuid.v4(),
+            ngoUserId: this.state.loggedInUserID,
             ngoName: this.state.ngoName,
             region: this.state.region,
             image: this.state.image,

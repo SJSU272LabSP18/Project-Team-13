@@ -6,6 +6,7 @@ import Footer from './Footer';
 import '../css/project.css';
 import swal from 'sweetalert';
 import { Link } from 'react-router-dom';
+import Pagination from './Pagination';
 
 class Project extends Component {
 
@@ -28,19 +29,66 @@ class Project extends Component {
             loggedInUsername: '',
             loggedInUserID: '',
             message: '',
-            currentHiredVolunteers: []
+            currentHiredVolunteers: [],
+            pageOfItems1: [],
+            pageOfItems2: [],
+            pageOfItems3: [],
+            interestedVolunteers: []
         }
         this.getProject = this.getProject.bind(this);
         this.getRecommendedUsers = this.getRecommendedUsers.bind(this);
         this.checkSession = this.checkSession.bind(this);
         this.handleHireButtonClick = this.handleHireButtonClick.bind(this);
         this.getHiredVolunteersForThisProject = this.getHiredVolunteersForThisProject.bind(this);
+        this.handleMarkInterestedClick = this.handleMarkInterestedClick.bind(this);
+        this.getInterestedVolunteers = this.getInterestedVolunteers.bind(this);
+        this.onChangePage1 = this.onChangePage1.bind(this);
+        this.onChangePage2 = this.onChangePage2.bind(this);
+        this.onChangePage3 = this.onChangePage3.bind(this);
     }
 
     componentWillMount() {
         this.getProject();
         this.checkSession();
         this.getHiredVolunteersForThisProject();
+        this.getInterestedVolunteers();
+    }
+
+    getInterestedVolunteers() {
+        var project = {
+            projectid: this.props.match.params.value
+        }
+        axios.post(url + '/getAllInterestedUsers', project, { withCredentials: true })
+            .then((response) => {
+                console.log("After getAllInterestedUsers", response.data);
+                if(response.data.message === "Got all interested volunteers successfully") {
+                    this.setState({
+                        interestedVolunteers: response.data.result,
+                        message: ''
+                    })
+                } else if(response.data.message === "No interested volunteers yet") {
+                    this.setState({
+                        message: "No volunteers interested yet"
+                    })
+                }
+            })
+    }
+
+    handleMarkInterestedClick() {
+        var user = {
+            userid: this.state.loggedInUserID,
+            projectid: this.props.match.params.value
+        }
+        axios.post(url + '/saveInterested', user, { withCredentials: true })
+            .then((response) => {
+                console.log(response.data);
+                if(response.data.message === "You are already interested") {
+                    swal("You have already marked this as interested");
+                } else if(response.data.message === "Added as Interested") {
+                    swal("Marked this as interested", "Please check your dashboard for interested projects", "success");
+                }
+
+            })
     }
 
     getHiredVolunteersForThisProject() {
@@ -76,6 +124,7 @@ class Project extends Component {
                         loggedInUserType: response.data.usertype
                     }, ()=> {
                         console.log("after checking session on project details page:", this.state.loggedInUserID);
+
                     })
                 } else {
                     swal("Please login again");
@@ -143,38 +192,71 @@ class Project extends Component {
             projectid: projectid
         }
         console.log("User in handleHireButtonClick", user);
-        axios.post(url + '/saveVolunteerForProject', user, { withCredentials: true })
-            .then((response) => {
-                console.log(response.data);
-                if(response.data.message === "Volunteer Hired") {
-                    swal(response.data.message, "", "success");
-                    window.location.reload(true);
+        swal({
+            title: "Are you sure?",
+            text: "",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    axios.post(url + '/saveVolunteerForProject', user, { withCredentials: true })
+                        .then((response) => {
+                            console.log(response.data);
+                            if(response.data.message === "Volunteer Hired") {
+                                swal(response.data.message, "", "success");
+
+                            }
+                            else if(response.data.message === "This volunteer is already hired, check current volunteers above") {
+                                swal(response.data.message, "", "warning");
+                            }
+                        })
                 }
-                else if(response.data.message === "This volunteer is already hired, check current volunteers above") {
-                    swal(response.data.message, "", "warning");
-                }
+
             })
+
     }
+
+    onChangePage1(pageOfItems) {
+        // update state with new page of items
+        this.setState({ pageOfItems1: pageOfItems});
+    }
+
+    onChangePage2(pageOfItems) {
+        // update state with new page of items
+        this.setState({ pageOfItems2: pageOfItems});
+    }
+
+    onChangePage3(pageOfItems) {
+        // update state with new page of items
+        this.setState({ pageOfItems3: pageOfItems});
+    }
+
 
     render() {
         let recommendedUsersToShow = null;
         let currentHiredUsersToShow = null;
+        let interestedUsersToShow = null;
         let changes = null;
+        let changes1 = null;
         let hireButton = null;
+
         var buttonStyle = {
             display: "none"
         }
 
         if(this.state.ngoId === this.state.loggedInUserID) {
-            buttonStyle.display = "block"
+            console.log("In Project", this.state.ngoId, this.state.loggedInUserID);
+            buttonStyle.display = "block";
 
-            //hiredCurrentUsers
-            if(this.state.currentHiredVolunteers === []) {
-                currentHiredUsersToShow = [];
+            //interestedUsers
+            if(this.state.interestedVolunteers === []) {
+                interestedUsersToShow = [];
             } else {
-                currentHiredUsersToShow = this.state.currentHiredVolunteers.map( u => {
+                interestedUsersToShow = this.state.pageOfItems3.map( u => {
                     return (
-                        <tr key={u.name} onClick={() => window.location.href = '/profile/' + u.id}>
+                        <tr key={u.name} >
                             <td>
                                 <div>
                                     <img id="volunteer_user_image" src={ u.image } alt='user image'/>
@@ -182,40 +264,7 @@ class Project extends Component {
                             </td>
                             <td>
                                 <div>
-                                    <p> { u.firstName } {u.lastName} </p>
-                                </div>
-                            </td>
-                            <td>
-                                <div>
-                                    <p> { u.email } </p>
-                                </div>
-                            </td>
-                            <td>
-                                <div>
-                                    <p> { u.region } </p>
-                                </div>
-                            </td>
-                        </tr>
-                    );
-                });
-            }
-
-            //recommendedUsers
-            if(this.state.recommendedUsers === []) {
-                recommendedUsersToShow = [];
-            } else {
-                recommendedUsersToShow = this.state.recommendedUsers.map( u => {
-
-                    return (
-                        <tr key={u.name}>
-                            <td>
-                                <div>
-                                    <img id="volunteer_user_image" src={ u.image } alt='user image'/>
-                                </div>
-                            </td>
-                            <td>
-                                <div>
-                                    <p> { u.firstName } {u.lastName} </p>
+                                    <p> <Link to={`/profile/${ u.userID }`}>  { u.firstName } {u.lastName} </Link> </p>
                                 </div>
                             </td>
                             <td>
@@ -237,16 +286,81 @@ class Project extends Component {
             }
 
 
-            changes = (
-                <div id="changes">
+            //hiredCurrentUsers
+            if(this.state.currentHiredVolunteers === []) {
+                currentHiredUsersToShow = [];
+            } else {
+                currentHiredUsersToShow = this.state.pageOfItems1.map( u => {
+                    return (
+                        <tr key={u.name} onClick={() => window.location.href = '/profile/' + u.userID}>
+                            <td>
+                                <div>
+                                    <img id="volunteer_user_image" src={ u.image } alt='user image'/>
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <p> <Link to={`/profile/${ u.userID }`}>  { u.firstName } {u.lastName} </Link> </p>
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <p> { u.email } </p>
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <p> { u.region } </p>
+                                </div>
+                            </td>
+                        </tr>
+                    );
+                });
+            }
 
+            //recommendedUsers
+            if(this.state.recommendedUsers === []) {
+                recommendedUsersToShow = [];
+            } else {
+                recommendedUsersToShow = this.state.pageOfItems2.map( u => {
+
+                    return (
+                        <tr key={u.name}>
+                            <td>
+                                <div>
+                                    <img id="volunteer_user_image" src={ u.image } alt='user image'/>
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <p> <Link to={`/profile/${ u.userID }`}>  { u.firstName } {u.lastName} </Link> </p>
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <p> { u.email } </p>
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <p> { u.region } </p>
+                                    <div>
+                                        <button id={ u.userID } style={ buttonStyle } onClick={ this.handleHireButtonClick } className="btn-primary">Hire</button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    );
+                });
+            }
+
+            changes = (
+                <div id = "changes">
                     <div id="currentHiredVorC">
                         <h1>Hired Volunteers</h1>
                         <hr/>
-                        <div>
-                            { this.state.message }
-                        </div>
-                        <br/>
+
+
                         <table className='table table-hover'>
                             <thead>
                             <tr className='table-secondary'>
@@ -257,10 +371,17 @@ class Project extends Component {
                             </tr>
                             </thead>
                             <tbody>
+                            <div>
+                                { this.state.message }
+                            </div>
+                            <br/>
                             { currentHiredUsersToShow }
                             </tbody>
 
                         </table>
+
+                        <Pagination items={this.state.currentHiredVolunteers} onChangePage={this.onChangePage1} />
+
                     </div>
 
                     <div id="recommendedVOrC">
@@ -277,13 +398,49 @@ class Project extends Component {
                             </tr>
                             </thead>
                             <tbody>
+                            <div>
+                                { this.state.message }
+                            </div>
+                            <br/>
                             { recommendedUsersToShow }
                             </tbody>
 
                         </table>
+                        <Pagination items={this.state.recommendedUsers} onChangePage={this.onChangePage2} />
+                    </div>
+
+                    <div id="interestedVOrC">
+                        <h1>Interested Volunteers</h1>
+                        <hr/>
+
+                        <table className='table table-hover'>
+                            <thead>
+                            <tr className='table-secondary'>
+                                <th id='volunteerImage'>Image</th>
+                                <th id='volunteerName'>Name</th>
+                                <th id='volunteerEmail'>Email</th>
+                                <th id='volunteerRegion'>Region</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <div>
+                                { this.state.message }
+                            </div>
+                            <br/>
+                            { interestedUsersToShow }
+                            </tbody>
+
+                        </table>
+                        <Pagination items={this.state.interestedVolunteers} onChangePage={this.onChangePage3} />
                     </div>
                 </div>
+            );
 
+        } else {
+            changes1 = (
+                <div>
+                    <button id="btnMarkInterested" className="btn-primary" onClick={ this.handleMarkInterestedClick } > Mark Interested </button>
+                </div>
             );
         }
 
@@ -311,6 +468,7 @@ class Project extends Component {
                                     <h3 className="my-3">Region</h3>
                                     <p> { this.state.region } </p>
                                 </div>
+                                { changes1 }
                             </div>
 
                             <div className="col-md-4">
@@ -325,7 +483,6 @@ class Project extends Component {
                             </div>
 
                             { changes }
-
 
                         </div>
                     </div>

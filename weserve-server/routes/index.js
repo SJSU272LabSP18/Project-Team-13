@@ -527,8 +527,8 @@ router.post('/saveInterested', (req, res) => {
             })
         } else {
 
-            var sql1 = "select * from Interested_Users_Projects where userid = ?";
-            con.query(sql1, userid, (err, result) => {
+            var sql1 = "select * from Interested_Users_Projects where userid = ? and projectid = ?";
+            con.query(sql1, [userid, projectid], (err, result) => {
                 if(err) {
                     console.log("Error in querying the db for saveInterested", err);
                     res.json({message: "Error in querying the db for saveInterested"});
@@ -563,7 +563,7 @@ router.post('/saveInterested', (req, res) => {
     })
 });
 
-router.get('/getAllInterestedUsers', (req, res) => {
+router.post('/getAllInterestedUsers', (req, res) => {
     console.log("In getAllInterestedUsers", req.body);
     var projectid = req.body.projectid;
     pool.getConnection((err, con) => {
@@ -600,7 +600,7 @@ router.get('/getAllInterestedUsers', (req, res) => {
     })
 });
 
-router.get('/getAllInterestedProjects', (req, res) => {
+router.post('/getAllInterestedProjects', (req, res) => {
     console.log("In getAllInterestedProjects", req.body);
     var userid = req.body.userid;
     pool.getConnection((err, con) => {
@@ -618,7 +618,7 @@ router.get('/getAllInterestedProjects', (req, res) => {
                     res.json({message: "Error in querying the db for getAllInterestedProjects"});
                 } else {
                     if(result.length > 0) {
-                        console.log("Got all interested projects successfully");
+                        console.log("Got all interested projects successfully", result);
                         res.json({
                             message: "Got all interested projects successfully",
                             result: result
