@@ -515,7 +515,127 @@ if(err) {
 })
 })
 
+router.post('/saveInterested', (req, res) => {
+    console.log("In saveInterested", req.body);
+    var userid = req.body.userid;
+    var projectid = req.body.projectid;
+    pool.getConnection((err, con) => {
+        if(err) {
+            console.log("Error connecting to mysql in saveInterested");
+            res.json({
+                message: "Error connecting to mysql in saveInterested"
+            })
+        } else {
 
+            var sql1 = "select * from Interested_Users_Projects where userid = ?";
+            con.query(sql1, userid, (err, result) => {
+                if(err) {
+                    console.log("Error in querying the db for saveInterested", err);
+                    res.json({message: "Error in querying the db for saveInterested"});
+                } else {
+                    if(result.length == 0) {
+                        var sql = "insert into Interested_Users_Projects (userid, projectid) values (?, ?)";
+                        con.query(sql, [userid, projectid], (err, result1) => {
+                            con.release();
+                            if(err) {
+                                console.log("Error in querying the db for saveInterested", err);
+                                res.json({message: "Error in querying the db for saveInterested"});
+                            } else {
+                                console.log("Interested Volunteer inserted successfully", result1);
+                                res.json({
+                                    message: "Added as Interested"
+                                })
+                            }
+                        })
+                    } else {
+                        if(result.length > 0) {
+                            console.log("The same user is already interested");
+                            res.json({
+                                message: "You are already interested"
+                            })
+                        }
+                    }
+                }
+            })
+
+
+        }
+    })
+});
+
+router.get('/getAllInterestedUsers', (req, res) => {
+    console.log("In getAllInterestedUsers", req.body);
+    var projectid = req.body.projectid;
+    pool.getConnection((err, con) => {
+        if(err) {
+            console.log("Error connecting to mysql in getAllInterested");
+            res.json({
+                message: "Error connecting to mysql in getAllInterested"
+            })
+        } else {
+            var sql = "select * from Users as u inner join Interested_Users_Projects as iup on u.userID = iup.userid where iup.projectid = ?";
+            con.query(sql, [projectid], (err, result) => {
+                con.release();
+                if(err) {
+                    console.log("Error in querying the db for getAllInterestedUsers", err);
+                    res.json({message: "Error in querying the db for getAllInterestedUsers"});
+                } else {
+                    if(result.length > 0) {
+                        console.log("Got all interested volunteers successfully");
+                        res.json({
+                            message: "Got all interested volunteers successfully",
+                            result: result
+                        })
+                    } else {
+                        console.log("No interested volunteers yet");
+                        res.json({
+                            message: "No interested volunteers yet",
+                            result: []
+                        })
+                    }
+
+                }
+            })
+        }
+    })
+});
+
+router.get('/getAllInterestedProjects', (req, res) => {
+    console.log("In getAllInterestedProjects", req.body);
+    var userid = req.body.userid;
+    pool.getConnection((err, con) => {
+        if(err) {
+            console.log("Error connecting to mysql in getAllInterested");
+            res.json({
+                message: "Error connecting to mysql in getAllInterested"
+            })
+        } else {
+            var sql = "select * from projectsNew as p inner join Interested_Users_Projects as iup on p.id = iup.projectid where iup.userid = ?";
+            con.query(sql, [userid], (err, result) => {
+                con.release();
+                if(err) {
+                    console.log("Error in querying the db for getAllInterestedProjects", err);
+                    res.json({message: "Error in querying the db for getAllInterestedProjects"});
+                } else {
+                    if(result.length > 0) {
+                        console.log("Got all interested projects successfully");
+                        res.json({
+                            message: "Got all interested projects successfully",
+                            result: result
+                        })
+                    } else {
+                        console.log("No interested projects yet");
+                        res.json({
+                            message: "No interested projects yet",
+                            result: []
+                        })
+                    }
+
+                }
+            })
+        }
+    })
+});
 
 
 
