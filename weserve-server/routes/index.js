@@ -50,7 +50,7 @@ router.post('/signup', (req, res, next) => {
                         console.log("In inserting user ", result);
                         res.json({"message": "Username already exists, please try another"});
                     } else {
-                        var query = "insert into Users (userID, userType, username, password, email) values (" + mysql.escape(req.body.id) + ", " + mysql.escape(req.body.usertype) +
+                        var query = "insert into Users (userType, username, password, email) values (" + mysql.escape(req.body.usertype) +
                             ", " + mysql.escape(req.body.username) + ", " + mysql.escape(req.body.password) + ", " + mysql.escape(req.body.email) + ")";
                         connection.query(query, (err, results) => {
                             connection.release();
