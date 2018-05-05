@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="c78ba226-14c7-4a62-9b1f-ad751fb96eeb" name="awsweserveserver" url="http://13.57.3.34">
+        <fileTransfer host="13.57.3.34" port="22" privateKey="$USER_HOME$/Downloads/cmpe273venkatesh.pem" rootFolder="/home/ec2-user" accessType="SFTP" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

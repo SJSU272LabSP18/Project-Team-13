@@ -44,3 +44,8 @@ hr {
     font-size: 12px;
 }
 
+.PaginationForUserhome {
+    clear: both;
+    margin-top: 150px;
+    margin-left: 100px;
+}

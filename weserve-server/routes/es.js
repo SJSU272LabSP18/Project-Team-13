@@ -123,7 +123,7 @@ router.get('/rec_projects_for_user/:id/:num', function(req,res) {
 // Get User Recommendations for Project
 // Params:
 //    id  - project ID
-//    num - # of projects to return
+//    num - # of users to return
 // Output: array of user IDs
 router.get('/rec_users_for_project/:id/:num', function(req,res) {
     console.log('In recommend users for project...')

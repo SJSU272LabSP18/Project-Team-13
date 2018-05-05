@@ -1,0 +1,27 @@
+#ShowingBlackBackground {
+    background-color: black;
+    width: auto;
+    height: 60px;
+}
+
+#projects {
+    margin-top: 50px;
+    margin-left: 20px;
+    width: 1410px;
+    height: auto;
+}
+
+
+#project_image {
+    max-width: 100px;
+    max-height: 100px;
+
+}
+
+#interestedProjects {
+    margin-top: 50px;
+    margin-left: 20px;
+    margin-bottom: 50px;
+    width: 1410px;
+    height: auto;
+}

@@ -5,7 +5,7 @@ import { Card, CardImg, CardText, CardBody,
 import axios from 'axios';
 import url from '../serverurl';
 import { Link } from 'react-router-dom';
-
+import PaginationForUserhome from './PaginationForUserhome';
 import '../css/userhome.css';
 
 class Userhome extends Component {
@@ -19,18 +19,27 @@ class Userhome extends Component {
             recommendedProjects: [],
             username: '',
             userID: 0,
+            isLoggedIn: false,
+            pageOfItems: []
         };
 
         this.getAllPostedProjects = this.getAllPostedProjects.bind(this);
         this.getFirstThreeWords = this.getFirstThreeWords.bind(this);
         this.getRecommendations = this.getRecommendations.bind(this);
         this.checkSession = this.checkSession.bind(this);
+        this.onChangePage = this.onChangePage.bind(this);
     }
 
     componentWillMount() {
         this.checkSession();
         this.getAllPostedProjects();
         
+        
+    }
+
+    onChangePage(pageOfItems) {
+        // update state with new page of items
+        this.setState({ pageOfItems: pageOfItems});
     }
 
     checkSession() {
@@ -40,7 +49,8 @@ class Userhome extends Component {
                 if(response.data.sessionUsername !== "ERROR") {
                     this.setState({
                         username: response.data.sessionUsername,
-                        userID: response.data.sessionUserID
+                        userID: response.data.sessionUserID,
+                        isLoggedIn: true
                     }, () => {
                         console.log("AFter checking session on userhome",this.state.userID);
                         this.getRecommendations();
@@ -112,7 +122,7 @@ class Userhome extends Component {
         if(this.state.projects === []) {
             showAllProjects = [];
         } else {
-            showAllProjects = this.state.projects.map(p => {
+            showAllProjects = this.state.pageOfItems.map(p => {
 
 
                 var firstWordsForProject = this.getFirstThreeWords(p.name);
@@ -126,7 +136,7 @@ class Userhome extends Component {
                             <CardImg top width="300px" height="300px" src= { p.imageUrl } alt="Card image cap" />
                             <CardBody id="cardBody">
                                 <CardTitle id="cardTitle"><Link to={`/project/${ p.id }`}> { firstWordsForProject } </Link></CardTitle>
-                                <CardSubtitle id="cardSubtitle"> <Link to={`/user/${ p.ngoUserId }`}> { firstWordsForNGO }</Link> </CardSubtitle>
+                                <CardSubtitle id="cardSubtitle"> <Link to={`/profile/${ p.ngoUserId }`}> { firstWordsForNGO }</Link> </CardSubtitle>
                             </CardBody>
                         </Card>
                     </div>
@@ -149,12 +159,24 @@ class Userhome extends Component {
                             <CardImg top width="300px" height="300px" src= { p.imageUrl } alt="Card image cap" />
                             <CardBody id="cardBody">
                                 <CardTitle id="cardTitle"><Link to={`/project/${ p.id }`}> { firstWordsForProject } </Link></CardTitle>
-                                <CardSubtitle id="cardSubtitle"> <Link to={`/user/${ p.ngoUserId }`}> { firstWordsForNGO }</Link> </CardSubtitle>
+                                <CardSubtitle id="cardSubtitle"> <Link to={`/profile/${ p.ngoUserId }`}> { firstWordsForNGO }</Link> </CardSubtitle>
                             </CardBody>
                         </Card>
                     </div>
                 );
             })
+        }
+
+        let changes = null;
+        if(this.state.isLoggedIn === true) {
+            changes = (
+                <div id="recommendedProjects">
+                    <h1>Recommended Projects</h1>
+                    <hr />
+                    { showRecommendedProjects }
+                </div>
+            );
+                
         }
 
         return(
@@ -163,17 +185,15 @@ class Userhome extends Component {
                     <Navbar />
                 </div>
 
-                <div id="recommendedProjects">
-                    <h1>Recommended Projects</h1>
-                    <hr />
-                    { showRecommendedProjects }
-                </div>
+                { changes }
 
                 <div id="recommendedProjects">
                     <h1>All Projects</h1>
                     <hr />
                     { showAllProjects }
                 </div>
+
+                <PaginationForUserhome items={this.state.projects} onChangePage={this.onChangePage} />
 
             </div>
         );
